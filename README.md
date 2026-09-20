@@ -4,6 +4,19 @@
 
 绝大多数 skill 绑定 **KANS（韩束）越南 TikTok Shop** 运营语境：汇率 ₫3,860 ≈ ¥1，主 KPI 是本土店直播间 GMV + 商品卡 GMV。
 
+## 给谁用 · 按角色找 skill
+
+| 你是 | 先看这几个 | 典型一句话 |
+|---|---|---|
+| **广告投手 / 投放实习生** | [`tiktok-automation/`](tiktok-automation/) 全部 · [`kans-analysis/kans-vn-high-cost-low-roi-hourly`](kans-analysis/kans-vn-high-cost-low-roi-hourly/) | 「按我发的清单批量改预算」「把这些达人加进排除列表」「这些素材 ID 是哪些达人发的」 |
+| **写周报 / 月报的运营** | [`kans-analysis/kans-vn-weekly-flow`](kans-analysis/kans-vn-weekly-flow/) · [`kans-livestream-charts`](kans-analysis/kans-livestream-charts/) · [`kans-vn-category-competition`](kans-analysis/kans-vn-category-competition/) | 「开始跑 9 月 W2 周报」「这是本周和上周的店铺数据，做竞品对比」 |
+| **品牌广告 / 人群包负责人** | [`tiktok-brand-upper-funnel`](kans-analysis/tiktok-brand-upper-funnel/) · [`ttms-audience-package-strategy`](kans-analysis/ttms-audience-package-strategy/) · [`ttms-brand-diagnosis`](kans-analysis/ttms-brand-diagnosis/) · [`kans-ttms-cads-report-batch`](tiktok-automation/kans-ttms-cads-report-batch/) | 「这个目标选什么标签」「CPCo 多少算好」「批量建种草广告结案报告」 |
+| **达人 BD** | [`data-cleaning/tkshop-daren-cleaning`](data-cleaning/tkshop-daren-cleaning/) | 「把这份达人导出表清洗一下，按客单价和护肤占比初筛」 |
+| **直播话术 / 主播培训** | [`live-script/vn-kans-script`](live-script/vn-kans-script/) | 「写一版美白三件套的越南语循环话术，配手卡」 |
+| **任何要读写飞书文档的人** | [`feishu/feishu-docs`](feishu/feishu-docs/) | 「把结论写进这个飞书文档」「读一下这个多维表格」 |
+
+关键词：Claude Skills · Claude in Chrome · TikTok Ads 自动化 · TTMS · GMV Max · 越南电商 · 周报自动化 · 飞书
+
 ## 怎么用
 
 - **Claude Code**：把某个 skill 目录复制到 `~/.claude/skills/<name>/`，或整个仓库 clone 后做软链接；对话里 `/<name>` 或自然语言触发。
