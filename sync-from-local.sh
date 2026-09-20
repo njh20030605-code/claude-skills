@@ -8,3 +8,4 @@ for s in kans-livestream-charts kans-vn-category-competition kans-vn-weekly-flow
 for s in kans-ttms-cads-report-batch tiktok-batch-budget-update tiktok-batch-exclude-creators tiktok-copy-adgroup-swap-creative tiktok-creative-id-to-creator; do S tiktok-automation $s; done
 S data-cleaning tkshop-daren-cleaning; S live-script vn-kans-script; S feishu feishu-docs; S personal touji-zhilu-playbook
 cd "$R" && git status --short
+bash "$R/scrub.sh"
