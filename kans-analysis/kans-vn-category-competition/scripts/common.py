@@ -53,7 +53,10 @@ NM = ["达人视频", "店播短视频", "店铺自播", "达人直播", "商城
 PAL = ["#4E79A7", "#A0CBE8", "#59A14F", "#C0392B", "#F1A340"]
 C_NOW, C_PRE, C_KANS, C_MKT = "#C0392B", "#A6ACAF", "#E8A33D", "#4E79A7"
 C_UP, C_DN = "#C0392B", "#1F7A45"      # 上升红 / 下降绿（中文财务习惯）
-KANS = "Kans Official Vietnam"
+# 你自己的店铺名，必须和榜单导出里的 Store Name 一字不差（大小写、空格都算）。
+# 用环境变量 MY_SHOP 覆盖，或直接改这一行。
+MY_SHOP = os.environ.get("MY_SHOP", "Your Shop")
+KANS = MY_SHOP          # 历史别名，脚本里仍用 KANS 指代「自己的店」
 DEFAULT_RATE = 6.75                     # 兜底汇率；正式出图务必用当日实时汇率
 
 # 平台导出表头 → 内部字段
@@ -127,7 +130,8 @@ MULTI_STORE = {
 # 店铺 → 展示用中文名。带 ? = 归属未核实，出图/写结论时必须保留问号或单独分组。
 # 完整规则见 references/brand_map.md
 CN_NAME = {
-    KANS: "韩束", "Carslan.VN": "卡姿兰", "Judydoll Vietnam": "橘朵",
+    # 竞品店铺名 → 中文名（都是榜单上的公开店名，按你的类目自行增删）
+    KANS: "本店", "Carslan.VN": "卡姿兰", "Judydoll Vietnam": "橘朵",
     "Flower Knows V N": "花知晓", "Florasis Hoa Tây Tử": "花西子",
     "FOCALLURE SHOP": "菲鹿儿", "Lanbena.vn": "兰蓓娜", "MENOW Mall": "蜜诺MeNow",
     "Enchen.vn": "映趣Enchen", "Hexze Việt Nam": "赫兹Hexze", "WIS.VN": "WIS",

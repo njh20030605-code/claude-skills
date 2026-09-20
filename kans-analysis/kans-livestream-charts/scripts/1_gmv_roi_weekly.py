@@ -1,17 +1,18 @@
 """
-图1 · KANS 直播间 每日 GMV 与 ROI（按周对比）
-============================================
+图1 · 直播间 每日 GMV 与 ROI（按周对比）
+========================================
 柱 = 每日 GMV（USD 折 RMB），不同周用不同颜色区分；
 线 = 每日 ROI（右轴），含退款后盈亏线；左上角每周小结框 + 环比。
 
-输入：KANS 日度数据（date, spend_usd, gmv_usd）
-  - CSV：examples/kans_daily.csv
-  - 或 KANS Campaign 原始 xlsx（自动解析）
+输入：自播日度数据，必需列 date(MM-DD), spend_usd, gmv_usd
+  - CSV：examples/kans_daily.csv（示例数据：换成你自己的导出）
+  - 或直播间 Campaign 原始 xlsx（按 common.XLSX_HEADERS 表头自动解析）
 
 用法：
   python 1_gmv_roi_weekly.py --input <csv或xlsx> --out <png> \
-      [--start 06-08] [--end 06-21] [--rate 6.8] [--breakeven 4.1]
+      [--start 06-08] [--end 06-21] [--rate 6.8] [--breakeven 4.1] [--brand 你的品牌]
 
+汇率 / 盈亏线 / 品牌名默认值在 common.PARAMS 里，命令行参数可覆盖。
 口径：ROI = gmv_usd / spend_usd（毛口径，平台展示口径）；GMV(RMB)=gmv_usd*rate。
 按周切分：从 --start 起每 7 天一周（第一周/第二周/…）。
 """
@@ -23,8 +24,13 @@ from matplotlib.lines import Line2D
 import common as C
 
 
-def build(df, out, rate=6.8, breakeven=4.1,
-          title=None, fx_usd_rmb=True):
+def build(df, out, rate=None, breakeven=None,
+          title=None, fx_usd_rmb=True, shop_label=None, year=None):
+    P = C.PARAMS
+    rate = P["usd_rate"] if rate is None else rate
+    breakeven = P["breakeven"] if breakeven is None else breakeven
+    shop_label = shop_label or P["shop_label"]
+    year = year or P["year"]
     reg, BLK = C.setup_cjk_font()
     df = df.reset_index(drop=True)
     n = len(df)
@@ -128,8 +134,8 @@ def build(df, out, rate=6.8, breakeven=4.1,
 
     if title is None:
         rng = f"{labels[0]} ~ {labels[-1]}"
-        title = f"KANS 越南直播间 每日 GMV 与 ROI（2026-{rng} · 1USD={rate}RMB）" if fx_usd_rmb \
-            else f"KANS 越南直播间 每日 GMV 与 ROI（2026-{rng}）"
+        title = f"{shop_label} 每日 GMV 与 ROI（{year}-{rng} · 1USD={rate}RMB）" if fx_usd_rmb \
+            else f"{shop_label} 每日 GMV 与 ROI（{year}-{rng}）"
     fig.suptitle(title, fontsize=16.5, fontproperties=BLK, y=0.99)
     plt.subplots_adjust(top=0.88, bottom=0.07, left=0.062, right=0.94)
     fig.savefig(out, dpi=170, facecolor="white", bbox_inches="tight")
@@ -137,15 +143,17 @@ def build(df, out, rate=6.8, breakeven=4.1,
 
 
 if __name__ == "__main__":
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--input", required=True)
-    ap.add_argument("--out", required=True)
-    ap.add_argument("--start"); ap.add_argument("--end")
-    ap.add_argument("--rate", type=float, default=6.8)
-    ap.add_argument("--breakeven", type=float, default=4.1)
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--input", required=True, help="CSV(date,spend_usd,gmv_usd) 或 Campaign 原始 xlsx")
+    ap.add_argument("--out", required=True, help="输出 PNG 路径")
+    ap.add_argument("--start", help="起始日 MM-DD（周从这天起每 7 天切一段）"); ap.add_argument("--end")
+    ap.add_argument("--rate", type=float, default=None, help=f"1 USD = ? RMB，默认 common.PARAMS usd_rate={C.PARAMS['usd_rate']}")
+    ap.add_argument("--breakeven", type=float, default=None, help=f"退款后盈亏线 ROI，默认 {C.PARAMS['breakeven']}；传 0 不画")
     ap.add_argument("--no-rmb", action="store_true", help="保持 USD，不折人民币")
-    ap.add_argument("--title")
+    ap.add_argument("--brand", default=None, help=f"标题里的店铺/品牌名，默认 '{C.PARAMS['shop_label']}'")
+    ap.add_argument("--year", default=None, help=f"标题里的年份，默认 {C.PARAMS['year']}")
+    ap.add_argument("--title", help="完全自定义标题（覆盖自动标题）")
     a = ap.parse_args()
     df = C.load_kans_daily(a.input, a.start, a.end)
     build(df, a.out, rate=a.rate, breakeven=a.breakeven,
-          title=a.title, fx_usd_rmb=not a.no_rmb)
+          title=a.title, fx_usd_rmb=not a.no_rmb, shop_label=a.brand, year=a.year)

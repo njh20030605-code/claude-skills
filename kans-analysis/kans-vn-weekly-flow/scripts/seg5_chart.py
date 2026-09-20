@@ -2,6 +2,7 @@
 """流量结构 5 段核心指标条形图
 
 每期只改下面 A（上期）/ B（本期）两个 dict 与 HEAD 那句话；其余从 _config.py 读。
+用法：python3 seg5_chart.py   （不依赖外部文件；A/B 从 CLP 导出汇总后手填）
 
 🔴 铁律（踩过才写的，别改）：
   1. 总量只信 CLP（Creator-Live-Performance）；截图/入口表只做结构拆分，不作总量来源。
@@ -15,7 +16,7 @@
 """
 import sys, os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from _config import PERIOD, W1L, W2L, VND, OUT, SKILL_CHART
+from _config import PERIOD, W1L, W2L, VND, OUT, SKILL_CHART, TITLE_PREFIX, FILE_PREFIX, LOCAL_CCY
 sys.path.insert(0, SKILL_CHART)
 import numpy as np, matplotlib
 matplotlib.use('Agg')
@@ -24,11 +25,21 @@ from matplotlib.patches import Rectangle
 import common as C
 REG,BLK=C.setup_cjk_font()
 UP,DN='#C0392B','#1A8A78'; GREY,INK='#8A929B','#23303D'
+
+# ======================= 参数块（每期改这里） =======================
 # 🔴 指标名一律用平台原名，括号里写死分母，避免与后台卡片对不上
-A=dict(曝光=4072386,观看=118833,商品曝光=953855,时长h=139.30,场次=8,商品点击=30852,SKU订单=4561,订单=2181,
-       GMV=201769.7647,新粉=539,点赞=64676,评论=6207,分享=267)   # 上期＝8月W2 已发布口径（期末+1 日成熟度，与本期对齐）
-B=dict(曝光=3657750,观看=111487,商品曝光=993427,时长h=135.8833,场次=7,商品点击=27928,SKU订单=4133,订单=1972,
-       GMV=188784.9979,新粉=495,点赞=45343,评论=5805,分享=186)   # 本期全部取自 CLP 汇总（7 场，含 8/17–8/23）
+# 示例数据：换成你自己的导出（CLP 汇总：Σ 各场）
+A=dict(曝光=4000000,观看=120000,商品曝光=950000,时长h=140.0,场次=8,商品点击=31000,SKU订单=4600,订单=2200,
+       GMV=200000.0,新粉=540,点赞=65000,评论=6200,分享=270)   # 上期（取上期报告已发布口径，成熟度与本期对齐）
+B=dict(曝光=3700000,观看=112000,商品曝光=990000,时长h=136.0,场次=7,商品点击=28000,SKU订单=4100,订单=2000,
+       GMV=190000.0,新粉=500,点赞=45000,评论=5800,分享=190)   # 本期（全部取自 CLP 汇总）
+# 顶部「一句话」：每期按本期方向重写，不要套旧模板。{chg} 里可取任意指标的环比 %。
+HEAD_TMPL=('一句话：曝光 {曝光:+.1f}%、观看 {观看:+.1f}% —— 进房率 {tap_a:.2f}% → {tap_b:.2f}%（{tap_pp:+.2f}pp）'
+           '<此处写本期的判断：是承接变好还是曝光结构变化的机械效应，承接要看 ★CTR 与各入口 CTOR>')
+FOOT_EXTRA=('* 场均时长受场次影响（本期 {nb} 场 / 上期 {na} 场），判断请用总时长　│　'
+            '上期取上期报告已发布口径（期末+1 日成熟度），与本期对齐')
+# =====================================================================
+
 for g in (A,B):
     g['进房率']=g['观看']/g['曝光']; g['场均时长']=g['时长h']/g['场次']
     g['LIVECTR']=g['商品点击']/g['观看']            # CLP「LIVE CTR」列
@@ -90,9 +101,14 @@ for row in ROWS:
     v=chg[key]; col=UP if v>0 else DN
     if hl: ax.add_patch(Rectangle((X_NAME-0.6,y-0.42),X_PP-X_NAME+1.2,0.84,fc='#FFF6DC',ec='none',zorder=0))
     ax.text(X_NAME,y,name,ha='left',va='center',fontsize=12.2,color=INK,fontproperties=(BLK if hl else None))
-    ax.add_patch(Rectangle((min(ZERO,bx(v)),y-0.21),abs(bx(v)-ZERO),0.42,fc=col,ec='none',zorder=3))
-    ax.text(bx(v)+(0.9 if v>0 else -0.9),y,f'{v:+.1f}%',ha='left' if v>0 else 'right',va='center',
-            fontsize=11.5,fontproperties=BLK,color=col,zorder=4)
+    # 条形设上下限，超限值的标签画在条内（白色粗体），避免甩出画布
+    vb=min(max(v,lo),hi)
+    ax.add_patch(Rectangle((min(ZERO,bx(vb)),y-0.21),abs(bx(vb)-ZERO),0.42,fc=col,ec='none',zorder=3))
+    if vb!=v:
+        ax.text((ZERO+bx(vb))/2,y,f'{v:+.1f}%',ha='center',va='center',fontsize=11,fontproperties=BLK,color='white',zorder=4)
+    else:
+        ax.text(bx(v)+(0.9 if v>0 else -0.9),y,f'{v:+.1f}%',ha='left' if v>0 else 'right',va='center',
+                fontsize=11.5,fontproperties=BLK,color=col,zorder=4)
     ax.text(X_PREV,y,fmt(A[key]),ha='right',va='center',fontsize=11.8,color=GREY)
     ax.text(X_ARROW,y,'→',ha='center',va='center',fontsize=11.5,color='#B7BEC5')
     ax.text(X_CUR,y,fmt(B[key]),ha='left',va='center',fontsize=11.8,color=INK,fontproperties=BLK)
@@ -107,21 +123,20 @@ for t in range(int(lo//_step*_step),int(hi)+1,_step):
     if t<lo: continue
     ax.plot([bx(t),bx(t)],[-0.55,n-0.4],color='#ECECEC',lw=0.9,zorder=0)
     ax.text(bx(t),n+0.05,f'{t:+d}'.replace('+0','0'),ha='center',va='center',fontsize=10.5,color=GREY)
-fig.suptitle(f'KANS 越南 SKINCARE 直播间 · 流量结构 5 段核心指标｜本期 {W2L} vs 上期 {W1L}',
+fig.suptitle(f'{TITLE_PREFIX} · 流量结构 5 段核心指标｜本期 {W2L} vs 上期 {W1L}',
              fontsize=17,fontproperties=BLK,y=0.985,color=INK)
-head=(f'一句话：曝光 {chg["曝光"]:+.1f}%、观看 {chg["观看"]:+.1f}% —— 进房率 {A["进房率"]*100:.2f}% → {B["进房率"]*100:.2f}%'
-      f'（{(B["进房率"]-A["进房率"])*100:+.2f}pp）「变好」是推荐位曝光 −22.1% 的机械效应，承接要看 ★CTR 与各入口 CTOR')
+head=HEAD_TMPL.format(**chg, tap_a=A['进房率']*100, tap_b=B['进房率']*100, tap_pp=(B['进房率']-A['进房率'])*100)
 fig.text(0.5,0.945,head,ha='center',fontsize=13,fontproperties=BLK,color=UP)
 fig.text(0.5,0.030,
- f'数据源：Creator-Live-Performance（W1 {A["场次"]}场 / W2 {B["场次"]}场）　│　GMV 为 Attributed GMV，VND ÷ {VND:,.0f} → RMB　│　'
+ f'数据源：Creator-Live-Performance（W1 {A["场次"]}场 / W2 {B["场次"]}场）　│　GMV 为 Attributed GMV，{LOCAL_CCY} ÷ {VND:,.0f} → RMB　│　'
  '颜色：红 = 上升 / 绿 = 下降（中国财务口径）　│　黄底 = 本期需重点关注项',
  ha='center',fontsize=10.5,color=GREY)
 fig.text(0.5,0.014,
- '★ = 与 LIVE Manager › Live Performance 后台卡片同口径（CTR = 点击÷商品曝光、CTOR = 订单数÷点击），可直接对数；本期未提供后台卡片截图，故未做逐项对照　│　'
- '* 场均时长受场次影响（本期 7 场 / 上期 8 场，上期 8/15 曾拆两场），判断请用总时长　│　'
- '上期取 8月W2 已发布口径（期末+1 日成熟度），与本期对齐，未用 8/24 重导版本',
+ '★ = 与 LIVE Manager › Live Performance 后台卡片同口径（CTR = 点击÷商品曝光、CTOR = 订单数÷点击），可直接对数　│　'
+ +FOOT_EXTRA.format(na=A['场次'],nb=B['场次']),
  ha='center',fontsize=9.6,color=GREY)
 plt.subplots_adjust(top=0.925,bottom=0.075,left=0.012,right=0.988)
-fig.savefig(f'{OUT}/KANS_VN_{PERIOD}_Step9_5段核心指标条形图.png',dpi=150,facecolor='white',bbox_inches='tight')
-print(f'{n_up}/{n_all} 上涨')
+p=f'{OUT}/{FILE_PREFIX}_{PERIOD}_Step9_5段核心指标条形图.png'
+fig.savefig(p,dpi=150,facecolor='white',bbox_inches='tight')
+print('saved',p); print(f'{n_up}/{n_all} 上涨')
 for r in metrics: print(f'{r[1]:18s} {A[r[2]]:>14,.4f} -> {B[r[2]]:>14,.4f}  {chg[r[2]]:+7.1f}%')

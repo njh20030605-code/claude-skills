@@ -4,7 +4,7 @@ run_all.py —— 一条命令跑完：指标汇总 → 6 张图 → xlsx
 
 python run_all.py --cur cur.tsv --pri pri.tsv --rate 6.7476 \
     --cur-label "本周 08.03-08.09" --pri-label "上周 07.27-08.02" \
-    --outdir /mnt/user-data/outputs
+    --outdir ./out
 
 指标结果同时打印到屏幕并写入 <outdir>/metrics.txt。
 """

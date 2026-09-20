@@ -18,31 +18,45 @@ description: 每小时扫描KANS越南GMV Max(商品+直播)当天高成本低RO
 - 两者公共：`order_field='mixed_real_cost'`、`order_type=1`、`page_size=50`（>50 报参数无效）；金额 `¥ = mixed_real_cost / 3891`（VND→¥）。响应在 `data.table`（数组），分页在 `data.pagination.page_count / total_count`。
 - **排除**：`item_id==='-1'`（汇总行）、`shop_content_type==='product_card'`（自动商品卡）。命中：¥>70 且 ROI<2。
 
+## 参数（先填这几个，正文里的值都指它们）
+
+| 占位符 | 含义 | 例（KANS 越南） |
+|---|---|---|
+| `{{市场}}` | 卖家后台域名的国家段 | `vn` → `seller-{{市场}}.tiktok.com`（泰国 `th`、印尼 `id`、马来 `my`、菲律宾 `ph`、新加坡 `sg`） |
+| `{{店铺名}}` | 后台右上角的账号名 | `Kans Official Vietnam` |
+| `{{汇率}}` | 1 人民币 = 多少本币，成本阈值按它折算 | `3891`（VND）；泰铢 4.5、印尼盾 2250、林吉特 0.6、比索 8.0、新币 0.18 |
+| `{{成本阈值}}` / `{{ROI阈值}}` | 命中标准 | `¥70` / `2` |
+| 计划清单 | 下面那张表，换成你自己的 | — |
+
 ## 前置
-使用 Claude in Chrome（已登录 seller-vn.tiktok.com，账号 Kans Official Vietnam）。工具延迟加载时先用 ToolSearch 载入：tabs_context_mcp, navigate, javascript_tool, computer。**全程只用 1 个标签页反复重放接口，不要多开；结束时关闭该标签页释放资源。**
+使用 Claude in Chrome（已登录 `seller-{{市场}}.tiktok.com`，账号 `{{店铺名}}`）。工具延迟加载时先用
 
 ## 计划清单
+
+⚠️ 下面是**示例数据，换成你自己的**。ID 怎么拿：进 GMV Max 列表，点开任一计划的抽屉，
+地址栏 `campaign_id=` 后面那串就是；商品 ID 在抽屉里的商品卡片上。
+
 商品 GMV Max（campaign_id / product_id）：
-1. MKT-白精华-0708 : 1870076773155954 / 1731561143212017689
-2. MKT-素颜霜-0708 : 1870076773163362 / 1731728613455398937
-3. MKT-红精华-0708 : 1870076725074050 / 1731559750857099289
-4. OL-白精华single-0715 : 1870746187130001 / 1734336273358619673
-5. MKT-红洁面-0708 : 1870076773167218 / 1731558826539714585
-6. OL-红精华single-0722 : 1871417792152593 / 1734336201423553561
+1. 计划A-主推品 : 1800000000000001 / 1000000000000000001
+2. 计划B : 1800000000000002 / 1000000000000000002
+3. 计划C : 1800000000000003 / 1000000000000000003
+4. 计划D-单品 : 1800000000000004 / 1000000000000000004
+5. 计划E : 1800000000000005 / 1000000000000000005
+6. 计划G-单品 : 1800000000000006 / 1000000000000000007
 直播 GMV Max（campaign_id）：
-7. KANS SKINCARE VIETNAM 0708 : 1870075962758033
-（如需加另一直播计划 KANS khoa học trẻ hóa 0708，去直播 GMV Max 列表读其 campaign_id 后补入。）
+7. 直播计划1 : 1800000000000007
+（要加第二个直播计划，去直播 GMV Max 列表读它的 campaign_id 后补一行。）
 
 ## 执行步骤
 ### A. 抓商品模板并扫描
 1. navigate 到任一商品计划抽屉，等 6 秒：
-   https://seller-vn.tiktok.com/ads-creation/dashboard?origin=SC_ads_tab_button_PC&type=product&mpa=1&campaign_id=1870076773155954&product_id=1731561143212017689&activated_tab_id=1&shop_region=VN
+   https://seller-{{市场}}.tiktok.com/ads-creation/dashboard?origin=SC_ads_tab_button_PC&type=product&mpa=1&campaign_id=<你的商品计划ID>&product_id=<对应商品ID>&activated_tab_id=1&shop_region={{市场大写}}
 2. 注入拦截器（下方），再把日期输入框改成「当天-当天」强制重发（因页面默认可能已是7天窗口、值不变不会触发；务必改成和当前不同的值），等 3 秒确认 `window.__caps` 捕获到含 spu_id_list 的模板。
 3. 用商品模板对 6 个商品计划跑「当天」；若 RUN_7D 再跑一次「近7天」。
 
 ### B. 抓直播模板并扫描
 4. navigate 到直播计划抽屉，等 6 秒：
-   https://seller-vn.tiktok.com/ads-creation/dashboard?origin=SC_ads_tab_button_PC&type=live&mpa=1&campaign_id=1870075962758033&activated_tab_id=1&shop_region=VN
+   https://seller-{{市场}}.tiktok.com/ads-creation/dashboard?origin=SC_ads_tab_button_PC&type=live&mpa=1&campaign_id=<你的直播计划ID>&activated_tab_id=1&shop_region={{市场大写}}
 5. 重新注入拦截器（导航后拦截器会丢失），改日期强制重发，捕获直播模板（含 external_type_list）。
 6. 用直播模板对直播计划跑「当天」；若 RUN_7D 再跑一次「近7天」。
 

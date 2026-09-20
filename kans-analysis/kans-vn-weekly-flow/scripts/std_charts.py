@@ -121,7 +121,7 @@ ax.legend(handles=handles, loc='upper center', bbox_to_anchor=(0.66, 1.0), ncol=
 fig.suptitle(f'KANS 越南 SKINCARE 直播间 · 每日 GMV 与 ROI（{PERIOD} {W2L[3:]} vs {W1L[3:]}）',
              fontsize=17, fontproperties=BLK, y=0.985)
 fig.text(0.5, 0.012,
-         'GMV / 花费口径：GMV-MAX campaign 1870075962758033 导出（Gross revenue / Net Cost）'
+         'GMV / 花费口径：GMV-MAX campaign 1000000000000001 导出（Gross revenue / Net Cost）'
          '   │   ROI = 总收入 ÷ 净成本   │   1 RMB = 3,890 VND   │   盈亏线 4.1 = 退款后综合成本线',
          ha='center', fontsize=10.5, color=P['ann_grey'])
 plt.subplots_adjust(top=0.88, bottom=0.09, left=0.058, right=0.945)

@@ -1,16 +1,21 @@
 ---
 name: "kans-ttms-cads-report-batch"
-description: "在 TikTok Market Scope (TTMS) 投后结案页面用 Claude in Chrome 批量创建 KANS 越南「种草广告报告」结案。当用户给出一批待建报告（或给出 Campaign Report + GMV Max Creative 导出表让你自己筛）并要求\"批量建种草广告报告 / 跑 C-ads 结案 / 建投后结案报告 / 继续建报告\"时使用。核心：分析周期（起止日期）必须先跟用户确认再执行；逐个用 javascript_tool + 坐标点击操作受控 React 表单，靠\"可创建报告数\"配额循环建满→等处理释放→再建，靠\"Contains 1 个广告组\"+广告组全名校验勾中正确广告组。"
+description: "在 TikTok Market Scope (TTMS) 投后结案页面用 Claude in Chrome 批量创建「种草广告报告」结案（原为 KANS 越南场景，店铺名等参数已抽成占位符）。当用户给出一批待建报告（或给出 Campaign Report + GMV Max Creative 导出表让你自己筛）并要求\"批量建种草广告报告 / 跑 C-ads 结案 / 建投后结案报告 / 继续建报告\"时使用。核心：分析周期（起止日期）必须先跟用户确认再执行；逐个用 javascript_tool + 坐标点击操作受控 React 表单，靠\"可创建报告数\"配额循环建满→等处理释放→再建，靠\"Contains 1 个广告组\"+广告组全名校验勾中正确广告组。"
 ---
 
----
-name: "kans-ttms-cads-report-batch"
-description: "在 TikTok Market Scope (TTMS) 投后结案页面用 Claude in Chrome 批量创建 KANS 越南「种草广告报告」结案。当用户给出一批待建报告（或给出 Campaign Report + GMV Max Creative 导出表让你自己筛）并要求\"批量建种草广告报告 / 跑 C-ads 结案 / 建投后结案报告 / 继续建报告\"时使用。核心：分析周期（起止日期）必须先跟用户确认再执行；逐个用 javascript_tool + 坐标点击操作受控 React 表单，靠\"可创建报告数\"配额循环建满→等处理释放→再建，靠\"Contains 1 个广告组\"+广告组全名校验勾中正确广告组。"
----
+# TTMS 种草广告报告（C-ads 投后结案）批量创建
 
-# KANS 越南 TTMS 种草广告报告（C-ads 投后结案）批量创建
+## 参数（先填这三个，正文里的 `{{}}` 都指它们）
 
-用 Claude in Chrome 在 TikTok Market Scope 上批量创建 KANS Vietnam 的「种草广告报告」（一次性投后结案报告）。本 SKILL 是实操蒸馏版，记录了真实跑通后才知道的坑，照做即可。
+| 占位符 | 含义 | 例（KANS 越南） |
+|---|---|---|
+| `{{广告主}}` | TTMS 里的广告主 / 账号名 | `KANS Vietnam` |
+| `{{活动名关键词}}` | 用来在页面里定位滚动容器和广告组的唯一关键词，取你活动名里最独特的一段，**大小写要和页面完全一致** | `KANS SKINCARE VIETNAM` |
+| `{{类目}}` | 账号所属类目 | `美妆个护` |
+
+⚠️ `{{活动名关键词}}` 填错会静默失败：脚本找不到容器就什么都不做，不会报错。改完先跑一次第 181 行那段 JS，确认能返回节点。
+
+用 Claude in Chrome 在 TikTok Market Scope 上批量创建 `{{广告主}}` 的「种草广告报告」（一次性投后结案报告）。本 SKILL 是实操蒸馏版，记录了真实跑通后才知道的坑，照做即可。
 
 ## ⛔ 第 0 条铁律：分析周期必须先跟用户确认
 
@@ -29,7 +34,7 @@ description: "在 TikTok Market Scope (TTMS) 投后结案页面用 Claude in Chr
 
 ## 前置
 - 平台页：`https://marketscope.tiktok.com/brand/report/list?accountId=7501254948374904840#/`
-- 账号：KANS Vietnam｜美妆个护（浏览器已登录）
+- 账号：`{{广告主}}`｜`{{类目}}`（浏览器已登录）
 - 工具：优先 `mcp__claude-in-chrome__javascript_tool`（受控表单最稳）+ 少量 `computer` 截图/坐标点击。用 ToolSearch 一次性加载：`tabs_context_mcp,navigate,javascript_tool,tabs_create_mcp,read_page,computer`。
 - 先 `tabs_context_mcp{createIfEmpty:true}`，再 navigate 到列表页。**首次进列表页 body 常常是空的（只有导航栏）**，`location.reload()` 后再等 6 秒就有内容了。
 
@@ -40,11 +45,11 @@ description: "在 TikTok Market Scope (TTMS) 投后结案页面用 Claude in Chr
 **A. 用户直接给清单**：每条 `素材ID | 起投MMDD | 产品 | 达人`。产品只有三类，原样写进报告名：`White Essence` / `Red serum` / `素颜霜`。
 
 **B. 用户丢平台导出表让你自己筛**（更常见）。典型是 4 个 xlsx：
-- `Kans--02-Campaign Report-YYYY-MM-DD to YYYY-MM-DD.xlsx` —— **这是待建清单的唯一权威来源**。列 `广告组名称` 格式 `MMDD-达人-产品-BC-人群包-素材ID`（有的带 ` 的副本 1` 后缀，有的是 `-无组件` 老命名解析不出产品，那些一般消耗为 0）。列 `消耗` 就是 C-ads 花费。**"跑表里有消耗的" = 这张表 `消耗 > 0` 的广告组。** 注意最后一行 `总计： N 条结果` 是汇总行，要剔掉。
+- `<广告主>--02-Campaign Report-YYYY-MM-DD to YYYY-MM-DD.xlsx` —— **这是待建清单的唯一权威来源**。列 `广告组名称` 格式 `MMDD-达人-产品-BC-人群包-素材ID`（有的带 ` 的副本 1` 后缀，有的是 `-无组件` 老命名解析不出产品，那些一般消耗为 0）。列 `消耗` 就是 C-ads 花费。**"跑表里有消耗的" = 这张表 `消耗 > 0` 的广告组。** 注意最后一行 `总计： N 条结果` 是汇总行，要剔掉。
 - 3 个 `..._Creative data ... - Product <productId>.xlsx` —— GMV Max 素材消耗数据，列 `Post ID`（=素材ID）、`Cost`。**只用来做匹配校验**（"匹配上即可"）：素材ID 在其中且 `Cost > 0` 才建。productId 映射：
-  - `1731561143212017689` → White Essence
-  - `1731559750857099289` → Red serum
-  - `1731728613455398937` → 素颜霜
+  - `1000000000000000001` → 示例商品1（示例数据：换成你自己的）
+  - `1000000000000000003` → 示例商品2
+  - `1000000000000000002` → 示例商品3
   - 读 `Post ID` 一定 `dtype=str`，否则 pandas 转成科学计数法丢精度。
 
 筛选逻辑（顺序）：Campaign Report `消耗>0` → 解析出 `起投MMDD/达人/产品/素材ID` → 与 GMV Max `Cost>0` 素材ID 求交集 → 按 `(素材ID, 起投MMDD, 产品)` 去重（同一素材同一天可能有重复行）→ 剔掉周期非法项 → 与列表页已有报告名做幂等去重。
@@ -116,7 +121,7 @@ await window.__next(8, /\d{15,}_\d{4}_0731[^\n]*/g)
 
 5. **页内搜索框不认素材ID**：`按名称或 ID 搜索` 搜的是推广系列/广告组ID，搜素材ID 搜不到。老老实实进系列翻页找。
 
-6. **水印干扰**：页面背景水印是一串假的 19 位数字（不同账号不一样，KANS VN 见到过 `7614060375009969160`、`7642277009700619784`）。解析 76 开头的 19 位ID时会混进来，用「广告组名全名正则 `^\d{4}-.*-\d{18,19}`」来筛叶子节点就能天然避开水印。
+6. **水印干扰**：页面背景水印是一串假的 19 位数字（不同账号不一样，见到过 `7614060375009969160`、`7642277009700619784`）。解析 76 开头的 19 位ID时会混进来，用「广告组名全名正则 `^\d{4}-.*-\d{18,19}`」来筛叶子节点就能天然避开水印。
 
 ---
 
@@ -181,16 +186,18 @@ document.querySelector('input[placeholder="开始时间 ～ 结束时间"]').val
 
 ### 5) 自定义资源 → 进对应推广系列
 选资源是**钻取式导航**（不是树展开）：点「自定义资源」弹出「选择资源」模态 → 点行内「N 个广告组」蓝链接（className 含 `017976`）**进入**该系列的广告组列表；面包屑「推广系列列表」可返回。
-先枚举系列名（列表在模态内可滚动容器里）：
+先枚举系列名（列表在模态内可滚动容器里）。**每段 JS 开头都先定义 `KW`，填你的 `{{活动名关键词}}`**：
 ```js
-const sc=[...document.querySelectorAll('*')].find(e=>e.scrollHeight>e.clientHeight+50&&e.clientHeight>200&&e.textContent.includes('KANS SKINCARE VIETNAM'));
+const KW='YOUR CAMPAIGN KEYWORD';   // ← 换成你的 {{活动名关键词}}，例 'KANS SKINCARE VIETNAM'
+const sc=[...document.querySelectorAll('*')].find(e=>e.scrollHeight>e.clientHeight+50&&e.clientHeight>200&&e.textContent.includes(KW));
 if(sc)sc.scrollTop=sc.scrollHeight; await new Promise(r=>setTimeout(r,900));
-JSON.stringify([...new Set([...document.querySelectorAll('*')].filter(e=>e.children.length===0&&/KOL-Brand Consideration|KANS/.test(e.textContent)&&e.textContent.length<80).map(e=>e.textContent.trim()))]);
+JSON.stringify([...new Set([...document.querySelectorAll('*')].filter(e=>e.children.length===0&&new RegExp('KOL-Brand Consideration|'+KW).test(e.textContent)&&e.textContent.length<80).map(e=>e.textContent.trim()))]);
 ```
 再按系列名进入（比硬编码"17 个广告组"稳）：
 ```js
 window.__enter=async function(camp){
- const sc=[...document.querySelectorAll('*')].find(e=>e.scrollHeight>e.clientHeight+50&&e.clientHeight>200&&e.textContent.includes('KANS SKINCARE VIETNAM'));
+ const KW='YOUR CAMPAIGN KEYWORD';   // ← 换成你的 {{活动名关键词}}，例 'KANS SKINCARE VIETNAM'
+ const sc=[...document.querySelectorAll('*')].find(e=>e.scrollHeight>e.clientHeight+50&&e.clientHeight>200&&e.textContent.includes(KW));
  if(sc)sc.scrollTop=0; await new Promise(r=>setTimeout(r,400));
  const leaf=[...document.querySelectorAll('*')].find(e=>e.children.length===0&&e.textContent.trim()===camp);
  if(!leaf) return 'no-camp';

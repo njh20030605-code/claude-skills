@@ -35,7 +35,7 @@ cd scripts
 python run_all.py --cur <本周.tsv> --pri <上周.tsv> --rate 6.7476 \
   --rate-note "Xe.com 中间价，2026-08-11 00:05 UTC" \
   --cur-label "本周 08.03-08.09" --pri-label "上周 07.27-08.02" \
-  --outdir /mnt/user-data/outputs
+  --outdir ./out
 ```
 
 `run_all.py` 依次做：`metrics.py`（指标汇总，同时写 `metrics.txt`）→ 6 张图 → xlsx（自动调 `/mnt/skills/public/xlsx/scripts/recalc.py` 重算公式）。

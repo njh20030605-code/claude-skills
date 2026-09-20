@@ -1,20 +1,23 @@
 """
-图2 · KANS 直播 GMV vs 大盘直播 GMV · 相关性验证
-================================================
+图2 · 自有品牌直播 GMV vs 大盘直播 GMV · 相关性验证
+==================================================
 左 Panel A：两条指数化曲线（量纲归一），看走势是否共振；阴影标大促。
 右 Panel B：散点 + 回归，标注 Pearson / 剔除大促 / Spearman。
 
 输入：
-  --kans   KANS 日度（date, spend_usd, gmv_usd）—— 取 gmv_usd 作 KANS 直播GMV
-  --market 大盘日度（date, short_k, live_k, card_k）—— 只取 live_k（大盘直播GMV）
+  --kans   自播日度，必需列 date(MM-DD), spend_usd, gmv_usd —— 取 gmv_usd 作自有品牌直播GMV
+  --market 大盘日度，必需列 date(MM-DD), short_k, live_k, card_k —— 只取 live_k（大盘直播GMV，千USD）
 两表按 date 取交集对齐。
 *重要*：只用大盘『直播』列(live_k)，不要用总盘。
 
 用法：
   python 2_livestream_correlation.py --kans <csv/xlsx> --market <csv/xlsx> --out <png> \
       [--start 06-01] [--end 06-20] \
-      [--promo 06-05 06-06 06-18] [--ramp 06-17 06-19] \
-      [--index-base window_mean|first_day]
+      [--promo 06-06 06-18] [--ramp 06-17 06-19] \
+      [--index-base window_mean|first_day] [--brand 你的品牌]
+
+大促日 / 拉量日 / 品牌名 / 数据源名默认值在 common.PARAMS 里，命令行参数可覆盖；
+传 `--promo` 后面不带日期 = 本期没有大促。
 
 方法论备注（见 SKILL.md）：
   - 相关系数对线性缩放完全免疫——换分母/换币种(USD/VND)都不影响 r。
@@ -36,11 +39,17 @@ def _index(arr, base):
     return arr / arr.mean() * 100  # window_mean (默认)
 
 
-def build(dk, dm, out, promo_dates, ramp_dates, index_base="window_mean", title=None):
+def build(dk, dm, out, promo_dates=None, ramp_dates=None, index_base="window_mean", title=None,
+          brand=None, year=None):
+    P0 = C.PARAMS
+    promo_dates = P0["promo_dates"] if promo_dates is None else promo_dates
+    ramp_dates = P0["ramp_dates"] if ramp_dates is None else ramp_dates
+    brand = brand or P0["brand"]
+    year = year or P0["year"]
     reg, BLK = C.setup_cjk_font()
     m = dk.merge(dm, on="date", how="inner").sort_values("date").reset_index(drop=True)
     dates = m["date"].tolist()
-    kans = m["gmv_usd"].to_numpy(float)       # KANS 直播GMV (USD)
+    kans = m["gmv_usd"].to_numpy(float)       # 自有品牌 直播GMV (USD)
     mkt = m["live_k"].to_numpy(float)         # 大盘 直播GMV (千USD) —— 只用直播列
     x = np.arange(len(m))
 
@@ -72,7 +81,7 @@ def build(dk, dm, out, promo_dates, ramp_dates, index_base="window_mean", title=
     axA.plot(x, mkt_i, color=P["market"], lw=2.6, marker="o", ms=8, mec="white", mew=1.1,
              zorder=4, label="大盘 直播GMV（指数）")
     axA.plot(x, kans_i, color=P["kans"], lw=2.6, marker="s", ms=7.5, mec="white", mew=1.1,
-             zorder=5, label="KANS 直播GMV（指数）")
+             zorder=5, label=f"{brand} 直播GMV（指数）")
     axA.set_xticks(x); axA.set_xticklabels(dates, fontsize=9.5)
     axA.set_ylabel(f"指数（各自{'首日' if index_base=='first_day' else f'{len(m)}日均值'} = 100）", fontsize=12)
     axA.grid(axis="y", color=P["grid"], lw=0.9, zorder=0)
@@ -89,7 +98,7 @@ def build(dk, dm, out, promo_dates, ramp_dates, index_base="window_mean", title=
                 edgecolor="white", lw=1, label="平销日")
     if ramp:
         axB.scatter(mkt[ramp], kans[ramp], s=170, color=P["ramp"], marker="^", zorder=6,
-                    edgecolor="white", lw=1.2, label="KANS 自播拉量")
+                    edgecolor="white", lw=1.2, label=f"{brand} 自播拉量")
     if promo:
         axB.scatter(mkt[promo], kans[promo], s=240, color=P["kans"], marker="*", zorder=6,
                     edgecolor="white", lw=1.0, label="平台大促")
@@ -100,7 +109,7 @@ def build(dk, dm, out, promo_dates, ramp_dates, index_base="window_mean", title=
              color="#23303D", linespacing=1.7,
              bbox=dict(boxstyle="round,pad=0.6", fc="white", ec="#C9D2DA", lw=1.3))
     axB.set_xlabel("大盘 直播GMV (USD, 千)", fontsize=12)
-    axB.set_ylabel("KANS 直播GMV (USD)", fontsize=12)
+    axB.set_ylabel(f"{brand} 直播GMV (USD)", fontsize=12)
     axB.grid(True, color=P["grid"], lw=0.9, zorder=0)
     C.style_axes(axB)
     axB.legend(loc="lower right", frameon=False, fontsize=11, labelspacing=0.8)
@@ -108,11 +117,11 @@ def build(dk, dm, out, promo_dates, ramp_dates, index_base="window_mean", title=
              fontsize=15, fontproperties=BLK, color="#1B2733")
 
     if title is None:
-        title = f"KANS 直播 GMV vs 大盘直播 GMV · 相关性验证（2026.{dates[0].replace('-','.')}–{dates[-1].replace('-','.')}）"
+        title = f"{brand} 直播 GMV vs 大盘直播 GMV · 相关性验证（{year}.{dates[0].replace('-','.')}–{dates[-1].replace('-','.')}）"
     fig.text(0.052, 0.945, title, fontsize=22, fontproperties=BLK, color="#1B2733", va="bottom")
     base_txt = "各自首日 = 100" if index_base == "first_day" else f"各自 ÷ {len(m)} 日均值 × 100"
     fig.text(0.052, 0.035,
-             "数据来源：KANS 直播间 Campaign 总收入（USD）  +  TTMS · Serums & Essences 直播GMV（USD, 区间最大值）"
+             f"数据来源：{brand} {P0['self_source']} 总收入（USD）  +  {P0['market_source']} · {P0['category']} 直播GMV（USD, 区间最大值）"
              f"    │    相关系数对量纲无关    │    指数 = {base_txt}",
              fontsize=10.5, color=P["ann_grey"], va="bottom")
     fig.savefig(out, dpi=155, facecolor="white", bbox_inches="tight")
@@ -121,16 +130,21 @@ def build(dk, dm, out, promo_dates, ramp_dates, index_base="window_mean", title=
 
 
 if __name__ == "__main__":
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--kans", required=True)
-    ap.add_argument("--market", required=True)
-    ap.add_argument("--out", required=True)
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--kans", required=True, help="自播日度 CSV(date,spend_usd,gmv_usd) 或 Campaign xlsx")
+    ap.add_argument("--market", required=True, help="大盘日度 CSV(date,short_k,live_k,card_k) 或类目导出 xlsx")
+    ap.add_argument("--out", required=True, help="输出 PNG 路径")
     ap.add_argument("--start"); ap.add_argument("--end")
-    ap.add_argument("--promo", nargs="*", default=["06-05", "06-06", "06-18"])
-    ap.add_argument("--ramp", nargs="*", default=["06-17", "06-19"])
+    ap.add_argument("--promo", nargs="*", default=None,
+                    help=f"平台大促日 MM-DD 列表，默认 common.PARAMS {C.PARAMS['promo_dates']}；只写 --promo 表示无大促")
+    ap.add_argument("--ramp", nargs="*", default=None,
+                    help=f"自播拉量日 MM-DD 列表，默认 common.PARAMS {C.PARAMS['ramp_dates']}")
     ap.add_argument("--index-base", choices=["window_mean", "first_day"], default="window_mean")
+    ap.add_argument("--brand", default=None, help=f"图例里的品牌名，默认 '{C.PARAMS['brand']}'")
+    ap.add_argument("--year", default=None, help=f"标题里的年份，默认 {C.PARAMS['year']}")
     ap.add_argument("--title")
     a = ap.parse_args()
     dk = C.load_kans_daily(a.kans, a.start, a.end)
     dm = C.load_market_daily(a.market, a.start, a.end)
-    build(dk, dm, a.out, a.promo, a.ramp, index_base=a.index_base, title=a.title)
+    build(dk, dm, a.out, a.promo, a.ramp, index_base=a.index_base, title=a.title,
+          brand=a.brand, year=a.year)

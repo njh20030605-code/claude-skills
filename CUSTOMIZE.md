@@ -8,9 +8,32 @@
 
 ---
 
+## 〇、市场参数表（东南亚六国）
+
+所有 skill 里跟「国家」有关的东西就这几项。换市场时先在这张表里查好，再按下面各 skill 的说明填进去。
+
+| 市场 | 货币 | 符号 | 1 人民币 ≈ | 时区 | 卖家后台域名 | 数字写法 |
+|---|---|---|---|---|---|---|
+| 越南 VN | VND | ₫ đ | 3,891 | UTC+7 | seller-vn.tiktok.com | 点=千分位，逗号=小数（`1.234.567` / `4,13`） |
+| 泰国 TH | THB | ฿ | 4.5 | UTC+7 | seller-th.tiktok.com | 逗号=千分位，点=小数（`1,234.50`） |
+| 印尼 ID | IDR | Rp | 2,250 | UTC+7 | seller-id.tiktok.com | 点=千分位，逗号=小数；缩写 rb=千 jt=百万 |
+| 马来西亚 MY | MYR | RM | 0.6 | UTC+8 | seller-my.tiktok.com | 逗号=千分位，点=小数 |
+| 菲律宾 PH | PHP | ₱ | 8.0 | UTC+8 | seller-ph.tiktok.com | 逗号=千分位，点=小数 |
+| 新加坡 SG | SGD | S$ | 0.18 | UTC+8 | seller-sg.tiktok.com | 逗号=千分位，点=小数 |
+
+汇率是写文档时的参考值，正式出数务必用当日实时汇率。**数字写法那一列最容易踩坑**：
+同一串 `1.234.567` 在越南是一百二十三万，在泰国是 1.234567。脚本里的解析函数会自动判别，
+但你手动核对数据时要按这一列看。
+
+盈亏线 ROI、月目标、班次划分这些是各家自己的经营参数，不随国家变，按自己的佣金、退款率、人力成本反算。
+
 ## 一、总表
 
-通用程度：★★★★★ = 开箱即用，不改也能跑；★ = 几乎每一段都绑着 KANS 的具体数字，只能借骨架。
+通用程度：★★★★★ = 开箱即用，不改也能跑；★★★★ = 参数已抽成占位符 / 示例数据，填表即可；★ = 还绑着具体业务数字，只能借骨架。
+
+> **2026-09-20 起**：标「已通用化」的 skill，脚本里的真实商品 ID、GMV 数字、店铺名、经营结论
+> 已全部换成示例数据，`SKILL.md` 顶部有「参数」小节列出所有 `{{占位符}}`。照着填就能跑，
+> 跑出来的数是你自己的。这些 skill 由本仓库直接维护，`sync-from-local.sh` 不会再用本机 KANS 版覆盖它们。
 
 | skill | 通用程度 | 必改参数 | 在哪改 |
 |---|---|---|---|
@@ -23,14 +46,14 @@
 | `kans-analysis/tiktok-brand-ads-analysis` | ★★★★ | 「市场应为越南」一句；其余是平台官方基准 | SKILL.md L3、L6、L24 |
 | `kans-analysis/tiktok-brand-upper-funnel` | ★★★★ | 越南活动日历、广告账户数备注、币种口径引用 | SKILL.md L63、L132、L167 |
 | `data-cleaning/tkshop-daren-cleaning` | ★★★★（越南）/ ★★★（其他国家） | 货币简写与小数格式、导出列名、初筛阈值、目标类目 | SKILL.md L98–113、L169–175、L383–391；`filter_candidates.py` L24–32、L59–64 |
-| `kans-analysis/kans-livestream-charts` | ★★★ | USD→RMB 汇率、盈亏线、大促日、事件标注、图标题、导出表头 | `scripts/common.py`、`1_*.py` L144–145、`2_*.py` L129–130、`3_*.py` L23–31 |
-| `kans-analysis/kans-vn-category-competition` | ★★★ | 店铺名、中文简称、多店品牌映射、中国品牌梯队、兜底汇率、导出列名 | `scripts/common.py` L51–57、L60–69、L106–190；`metrics.py` L50 |
+| `kans-analysis/kans-livestream-charts` | ★★★★（已通用化） | USD→RMB 汇率、盈亏线、大促日、事件标注、图标题、导出表头 | `scripts/common.py`、`1_*.py` L144–145、`2_*.py` L129–130、`3_*.py` L23–31 |
+| `kans-analysis/kans-vn-category-competition` | ★★★★（已通用化） | 店铺名、中文简称、多店品牌映射、中国品牌梯队、兜底汇率、导出列名 | `scripts/common.py` L51–57、L60–69、L106–190；`metrics.py` L50 |
 | `kans-analysis/ttms-audience-package-strategy` | ★★★ | 默认语境、§7 配方表、行业基准行、飞书文档 token | SKILL.md L3、L9、L25、L87、L156–169、L204、L212 |
-| `tiktok-automation/kans-ttms-cads-report-batch` | ★★ | TTMS accountId、账号名、产品名 / 商品 ID 映射、广告组命名格式、报告命名规则、JS 里用于定位的字符串 | SKILL.md L31–32、L40、L43–47、L54–56、L186–188、L193 |
-| `kans-analysis/tiktok-vn-kans-live-ops` | ★★ | 月目标、目标 ROI、盈亏线、两条汇率、SKU 名、素材 / 手卡阈值、排班时段、长期梯队、竞品名、飞书链接 | SKILL.md L3、L7、L37–38、L53–54、L67、L74、L79–80、L84–85、L89、L114–137 |
+| `tiktok-automation/kans-ttms-cads-report-batch` | ★★★★（已通用化） | TTMS accountId、账号名、产品名 / 商品 ID 映射、广告组命名格式、报告命名规则、JS 里用于定位的字符串 | SKILL.md L31–32、L40、L43–47、L54–56、L186–188、L193 |
+| `kans-analysis/tiktok-vn-kans-live-ops` | ★★★★（已通用化） | 月目标、目标 ROI、盈亏线、两条汇率、SKU 名、素材 / 手卡阈值、排班时段、长期梯队、竞品名、飞书链接 | SKILL.md L3、L7、L37–38、L53–54、L67、L74、L79–80、L84–85、L89、L114–137 |
 | `live-script/vn-kans-script` | ★★（框架 ★★★★） | 全部产品价格、赠品、成分、认证数据、品牌背书、越南语卡面文案 | SKILL.md L86–141、L203–205、L211–240 |
-| `kans-analysis/kans-vn-high-cost-low-roi-hourly` | ★ | 成本 / ROI 阈值、VND 汇率、计划清单（campaign_id / product_id）、卖家后台域名与账号、扫描时刻 | SKILL.md L6、L10–11、L18–19、L22、L24–34、L39、L45、L68 |
-| `kans-analysis/kans-vn-weekly-flow` | ★ | 两条汇率、VXP 费率、盈亏线、月目标、campaign ID、5 条商品 ID、品线关键词、主播表 / 飞书文档名、店铺名 / 达人 handle、6 班次、文件夹与文件名 | SKILL.md 全篇（见下）；`scripts/_config.py` 全部；`kol_koc.py` / `s105.py` / `s11.py` / `gmvmax_card.py` / `seg5_chart.py` 顶部数据块 |
+| `kans-analysis/kans-vn-high-cost-low-roi-hourly` | ★★★★（已通用化） | 成本 / ROI 阈值、VND 汇率、计划清单（campaign_id / product_id）、卖家后台域名与账号、扫描时刻 | SKILL.md L6、L10–11、L18–19、L22、L24–34、L39、L45、L68 |
+| `kans-analysis/kans-vn-weekly-flow` | ★★★★（已通用化） | 两条汇率、VXP 费率、盈亏线、月目标、campaign ID、5 条商品 ID、品线关键词、主播表 / 飞书文档名、店铺名 / 达人 handle、6 班次、文件夹与文件名 | SKILL.md 全篇（见下）；`scripts/_config.py` 全部；`kol_koc.py` / `s105.py` / `s11.py` / `gmvmax_card.py` / `seg5_chart.py` 顶部数据块 |
 | `personal/touji-zhilu-playbook` | 不适用 | 与电商无关的个人阅读存档，无需定制；不需要就整个目录删掉 | — |
 
 一个共性提醒：多个 skill 在结尾「关联技能」处互相点名（如 `kans-vn-weekly-flow` ↔ `kans-livestream-charts` ↔ `tiktok-brand-upper-funnel`）。你若改了目录名或 frontmatter 的 `name`，要把这些引用一起改，否则触发链会断。`README.md` / `README.en.md` 开头也写着 KANS 与 ₫3,860 的说明，一并改掉。
@@ -256,7 +279,7 @@ TTMS 结案页面的表单操作（配额循环、React 受控输入、双月面
 | VND→本币汇率 | L18、L61、L80、L86 | `mixed_real_cost / 3891` | 你的汇率；接口返回的是店铺本币，若你就想看本币，把除法去掉 |
 | 扫描时刻 | L10–11 | 每小时跑当天；本地小时 == 10 或 14 时加跑近 7 天 | 你的时区与节奏 |
 | 卖家后台 | L22、L39、L45 | `seller-vn.tiktok.com`、`shop_region=VN`、账号 `Kans Official Vietnam` | 你的国家域名（`seller-th` / `seller-id` / `seller-us` …）、`shop_region`、账号名 |
-| 计划清单 | L24–34 | 6 个商品 GMV Max（`campaign_id` / `product_id`）+ 1 个直播 GMV Max（`1870075962758033`） | 你的计划；在后台抽屉 URL 里能直接读到 |
+| 计划清单 | L24–34 | 6 个商品 GMV Max（`campaign_id` / `product_id`）+ 1 个直播 GMV Max（`1000000000000001`） | 你的计划；在后台抽屉 URL 里能直接读到 |
 | 抽屉 URL | L39、L45 | 带具体 `campaign_id` / `product_id` | 任选你的一个商品计划和一个直播计划 |
 | 输出文件名 | L68 | `KANS_高成本低ROI素材预警_<时间>.xlsx` | 你的命名 |
 | 接口字段名 | L16–18 | `onsite_mixed_real_roi2_shopping`、`lod_shop_direct_onsite_mixed_real_shopping_roas`、`order_field='mixed_real_cost'` | 平台字段，保留 |
@@ -278,7 +301,7 @@ TTMS 结案页面的表单操作（配额循环、React 受控输入、双月面
 | 大盘数据源 | L119–121、坑 34（L463） | Kalodata「越南美妆个护」（`country: VN`）/ TTMS `Beauty & Personal Care › Serums & Essences` | 你的国家 + 类目 |
 | 退款率过滤 | L154、L158 | `Creator Handle=kans.skincare_vn`；状态值中文 `已发货 / 已取消 / 已完成` | 你的直播间 handle；后台语言不同时状态值也不同 |
 | 竞品榜 | L172–173 | TikTok 官方 Top200；`TOP30 + KANS 双位置` | 你的榜单来源；「自播 + 达播必须同时看」保留 |
-| 直播 campaign ID | L228 | `1870075962758033` | 你的直播 GMV-MAX 计划 |
+| 直播 campaign ID | L228 | `1000000000000001` | 你的直播 GMV-MAX 计划 |
 | 商品卡 15 列 | L223–225 | 固定列名 | 通用，保留 |
 | 单链接判定清单 | L245–256 | 5 条商品 ID（`1734360557016744985` 等）+ 简称「白3 / 白 single / 白7 / 白3 / 白2」 | 你的主力链接；「清单固定、其余汇总成一行」这条规则保留 |
 | 品线关键词 | L259 | 红系 `collagen\|lão hóa\|nếp nhăn\|black waist\|peptide`；白系 `niacinamide\|trắng\|thâm\|…` | 你的产品线在商品标题里的关键词（目标市场语言） |
