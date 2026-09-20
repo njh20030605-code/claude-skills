@@ -1,5 +1,17 @@
-# Claude Skills 合集
+<div align="center">
 
+# Claude Skills 合集 · 自写 Claude 技能
+
+**18 个手写 skill，给 Claude Code / Claude in Chrome / claude.ai 用：TikTok 后台浏览器自动化、电商运营分析、数据清洗、直播话术、飞书文档。**
+
+中文 | [English](README.en.md)
+
+![Claude](https://img.shields.io/badge/Claude-Code%20%7C%20in%20Chrome%20%7C%20claude.ai-D97757?logo=anthropic&logoColor=white)
+![Skills](https://img.shields.io/badge/skills-18-blue)
+![Domain](https://img.shields.io/badge/%E5%9C%BA%E6%99%AF-TikTok%20Shop%20%E8%B6%8A%E5%8D%97-000000?logo=tiktok&logoColor=white)
+![License: MIT](https://img.shields.io/badge/license-MIT-green)
+
+</div>
 我在 Claude（Claude Code / Claude in Chrome / claude.ai）里用的自定义 skill。每个 skill 一个目录，`SKILL.md` 是入口（frontmatter 的 `name` / `description` 决定何时触发，正文是操作手册），`scripts/` `references/` `examples/` 是配套脚本、口径资料和示例数据。
 
 绝大多数 skill 绑定 **KANS（韩束）越南 TikTok Shop** 运营语境：汇率 ₫3,860 ≈ ¥1，主 KPI 是本土店直播间 GMV + 商品卡 GMV。
@@ -93,3 +105,7 @@
 2. 涉及浏览器自动化的：先确认参数（周期、清单、阈值）再执行；每一步靠页面上的计数校验；提交前列对照表。
 3. 涉及数据口径的：把口径写进 `references/`，SKILL.md 只放流程；口径变了改一处。
 4. 脚本一律可独立运行（`python3 scripts/x.py --help` 能看到用法），skill 只是编排。
+
+## 许可
+
+MIT，见 [LICENSE](LICENSE)。
