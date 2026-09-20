@@ -12,6 +12,7 @@
 ![License: MIT](https://img.shields.io/badge/license-MIT-green)
 
 </div>
+
 我在 Claude（Claude Code / Claude in Chrome / claude.ai）里用的自定义 skill。每个 skill 一个目录，`SKILL.md` 是入口（frontmatter 的 `name` / `description` 决定何时触发，正文是操作手册），`scripts/` `references/` `examples/` 是配套脚本、口径资料和示例数据。
 
 绝大多数 skill 绑定 **KANS（韩束）越南 TikTok Shop** 运营语境：汇率 ₫3,860 ≈ ¥1，主 KPI 是本土店直播间 GMV + 商品卡 GMV。
