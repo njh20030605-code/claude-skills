@@ -37,6 +37,10 @@ Each skill is a folder with a `SKILL.md` entry point (the frontmatter `name` / `
 | 📄 [`feishu/`](feishu/) | feishu-docs |
 | 🧭 [`personal/`](personal/) | touji-zhilu-playbook |
 
+## Adopt for your own shop
+
+The procedures are generic; only parameters (shop names, FX rate, thresholds, campaign IDs, Feishu links) are KANS-specific. **[CUSTOMIZE.md](CUSTOMIZE.md)** (Chinese) rates every skill for reusability (★1–5), lists the parameters to change with file and line, and gives three adoption paths: Vietnam TikTok Shop sellers, TikTok Shop in other countries, non-TikTok e-commerce. 5 skills work out of the box, 4 need a one-line change.
+
 ## Install
 
 - **Claude Code**: copy a skill folder to `~/.claude/skills/<name>/` (or clone and symlink). Trigger with `/<name>` or plain language.
@@ -48,6 +52,11 @@ Each skill is a folder with a `SKILL.md` entry point (the frontmatter `name` / `
 2. Browser-automation skills confirm parameters first, verify each step against an on-page counter, and show a comparison table before submitting.
 3. Metric definitions live in `references/`; `SKILL.md` only holds the procedure.
 4. Every script runs standalone (`python3 scripts/x.py --help`); the skill is just orchestration.
+
+## Contact
+
+- WeChat: **Anyway77777777**
+- GitHub: [@njh20030605-code](https://github.com/njh20030605-code)
 
 ## License
 

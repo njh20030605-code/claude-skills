@@ -30,6 +30,10 @@
 
 关键词：Claude Skills · Claude in Chrome · TikTok Ads 自动化 · TTMS · GMV Max · 越南电商 · 周报自动化 · 飞书
 
+## 接入你自己的店铺
+
+这些 skill 的流程是通用的，KANS 特有的只是参数（店铺名、汇率、阈值、计划 ID、表链接）。**[CUSTOMIZE.md](CUSTOMIZE.md)** 逐个 skill 列出了通用程度评级（★1–5）、必改参数、在哪一行改，以及「越南 TikTok 卖家 / 其他国家 TikTok 卖家 / 非 TikTok 电商」三条接入路径。5 个 skill 开箱即用，4 个改一处即可。
+
 ## 怎么用
 
 - **Claude Code**：把某个 skill 目录复制到 `~/.claude/skills/<name>/`，或整个仓库 clone 后做软链接；对话里 `/<name>` 或自然语言触发。
@@ -106,6 +110,11 @@
 2. 涉及浏览器自动化的：先确认参数（周期、清单、阈值）再执行；每一步靠页面上的计数校验；提交前列对照表。
 3. 涉及数据口径的：把口径写进 `references/`，SKILL.md 只放流程；口径变了改一处。
 4. 脚本一律可独立运行（`python3 scripts/x.py --help` 能看到用法），skill 只是编排。
+
+## 联系
+
+- 微信：**Anyway77777777**
+- GitHub：[@njh20030605-code](https://github.com/njh20030605-code)
 
 ## 许可
 
