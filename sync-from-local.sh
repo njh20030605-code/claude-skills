@@ -32,7 +32,14 @@ for s in tiktok-batch-budget-update tiktok-batch-exclude-creators tiktok-copy-ad
 done
 S data-cleaning tkshop-daren-cleaning
 S feishu feishu-docs
-S personal touji-zhilu-playbook
+
+# ── 2026-10 起新写的 skill：真源不在 synced/，按实际位置同步，公开前由 scrub.sh 脱敏 ──
+F() { rsync -a --delete "${X[@]}" "$2/" "$R/$1/"; }
+F kans-analysis/tiktok-brand-ads-analysis      "$HOME/.claude/skills/tiktok-brand-ads-analysis"
+F kans-analysis/kans-cads-summary-table        "$HOME/Desktop/skill/kans-cads-summary-table"
+F content/video-breakdown-doc                  "$HOME/.claude/skills/video-breakdown-doc"
+F feishu/gsheet-to-feishu-base-migration       "$HOME/.claude/skills/gsheet-to-feishu-base-migration"
+F personal/touji-zhilu-playbook                "$HOME/.claude/skills/touji-zhilu"
 
 bash "$R/scrub.sh"
 cd "$R" && git status --short

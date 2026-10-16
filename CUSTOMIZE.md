@@ -41,13 +41,16 @@
 | `tiktok-automation/tiktok-batch-budget-update` | ★★★★★ | 无；依赖「广告组名以数字 ID 结尾」这一命名习惯 | SKILL.md L30–31、`references/set_budget.js` L33 |
 | `tiktok-automation/tiktok-batch-exclude-creators` | ★★★★★ | 无；坐标是经验值，随屏幕变 | SKILL.md L20、L43 |
 | `tiktok-automation/tiktok-creative-id-to-creator` | ★★★★★ | 无 | — |
+| `feishu/gsheet-to-feishu-base-migration` 🆕 | ★★★★★ | 无业务参数；目标 base / 表和映射字典每次迁移现填 | `scripts/transform_template.py` L13–27；凭据 `~/.feishu/credentials.json`（`fbase.js` L17） |
 | `kans-analysis/ttms-brand-diagnosis` | ★★★★★ | 无 | — |
 | `tiktok-automation/tiktok-copy-adgroup-swap-creative` | ★★★★ | 广告组 / 广告命名规则、广告账户 ID | SKILL.md L27–37、L45 |
-| `kans-analysis/tiktok-brand-ads-analysis` | ★★★★ | 「市场应为越南」一句；其余是平台官方基准 | SKILL.md L3、L6、L24 |
+| `kans-analysis/tiktok-brand-ads-analysis` | ★★★★ | 「市场应为越南」一句；行业 Benchmark 选你的行业那一行；其余是平台官方基准 | SKILL.md L3、L6、L24、L41 |
+| `content/video-breakdown-doc` 🆕 | ★★★★ | 转写语言、字幕区位置、飞书账号 profile、Benchmark 分级线 | `scripts/transcribe_zh.py` L28；`scripts/prep.py` L101–102；`references/doc-structure.md` L94；`references/data-benchmark.md` L38 |
 | `kans-analysis/tiktok-brand-upper-funnel` | ★★★★ | 越南活动日历、广告账户数备注、币种口径引用 | SKILL.md L63、L132、L167 |
 | `data-cleaning/tkshop-daren-cleaning` | ★★★★（越南）/ ★★★（其他国家） | 货币简写与小数格式、导出列名、初筛阈值、目标类目 | SKILL.md L98–113、L169–175、L383–391；`filter_candidates.py` L24–32、L59–64 |
 | `kans-analysis/kans-livestream-charts` | ★★★★（已通用化） | USD→RMB 汇率、盈亏线、大促日、事件标注、图标题、导出表头 | `scripts/common.py`、`1_*.py` L144–145、`2_*.py` L129–130、`3_*.py` L23–31 |
 | `kans-analysis/kans-vn-category-competition` | ★★★★（已通用化） | 店铺名、中文简称、多店品牌映射、中国品牌梯队、兜底汇率、导出列名 | `scripts/common.py` L51–57、L60–69、L106–190；`metrics.py` L50 |
+| `kans-analysis/kans-cads-summary-table` 🆕 | ★★★ | 商品 ID → 简称映射、产品写法、报告命名格式、表头与文件名里的品牌名；汇率每期问用户 | `scripts/build_summary.py` L30–40、L496、L572、L646；SKILL.md L14、L28 |
 | `kans-analysis/ttms-audience-package-strategy` | ★★★ | 默认语境、§7 配方表、行业基准行、飞书文档 token | SKILL.md L3、L9、L25、L87、L156–169、L204、L212 |
 | `tiktok-automation/kans-ttms-cads-report-batch` | ★★★★（已通用化） | TTMS accountId、账号名、产品名 / 商品 ID 映射、广告组命名格式、报告命名规则、JS 里用于定位的字符串 | SKILL.md L31–32、L40、L43–47、L54–56、L186–188、L193 |
 | `kans-analysis/tiktok-vn-kans-live-ops` | ★★★★（已通用化） | 月目标、目标 ROI、盈亏线、两条汇率、SKU 名、素材 / 手卡阈值、排班时段、长期梯队、竞品名、飞书链接 | SKILL.md L3、L7、L37–38、L53–54、L67、L74、L79–80、L84–85、L89、L114–137 |
@@ -120,9 +123,10 @@
 
 | 参数 | 位置 | 原值 | 换成什么 |
 |---|---|---|---|
-| 市场 | SKILL.md L3、L6、L24 | 「越南市场」「投放市场(应为越南)」 | 你的市场；或者把 L24 改成「投放市场（确认）」 |
-| 出价方式 | L29 | 「应为 NoBid」 | 若你的 C-ads 不是 NoBid，改成实际方式 |
-| 数值基准 | L36–37、L46、L51–52、L58–65 | `$85K` 拆分临界 / `$100` 下限 / `1→7 天 −6%` / `6–10 条创意` / `VV>1000`、`6s VTR>34%` 等 | 这些来自 TikTok 官方分享；除非你的客户经理给了别的数，否则保留 |
+| 市场 | SKILL.md L3、L6、L41 | 「越南市场」「投放市场(应为越南)」 | 你的市场；或者把 L41 改成「投放市场（确认）」 |
+| 行业 Benchmark | L24–26 | Beauty and Care 一行（CPCo 0.03 / 互动率 1.4% / 互动 0.03 / 点赞 0.1 / 评论 28.7） | 换成你所在行业那一行（同一份平台 C-ads Playbook 里有各行业数） |
+| 出价方式 | L46 | 「应为 NoBid」 | 若你的 C-ads 不是 NoBid，改成实际方式 |
+| 数值基准 | L53–54、L63、L68–69、L75–82 | `$85K` 拆分临界 / `$100` 下限 / `1→7 天 −6%` / `6–10 条创意` / `VV>1000`、`6s VTR>34%` 等 | 这些来自 TikTok 官方分享；除非你的客户经理给了别的数，否则保留 |
 
 ### 8. kans-analysis/tiktok-brand-upper-funnel（★★★★）
 
@@ -333,6 +337,43 @@ TTMS 结案页面的表单操作（配额循环、React 受控输入、双月面
 
 一个人的 Telegram 频道阅读存档与方法论检索，和电商没有关系；公开仓库里也已按 `scrub.sh` 删掉了原帖全文。不需要定制，接入你自己的 skill 库时直接跳过或删除目录。
 
+### 19. feishu/gsheet-to-feishu-base-migration（★★★★★）🆕
+
+流程本身不绑品牌：先和用户逐条确认口径（迁哪些 sheet、去重键、状态映射、人名映射），再灌数、补迁、回填，每一步都留 record_id 台账可回滚。`references/kans-precedent.md` 是一次真实迁移的口径清单，**只作对照，别把里面的映射值直接套到你的品牌**。
+
+| 参数 | 位置 | 原值 | 换成什么 |
+|---|---|---|---|
+| 目标表 | `scripts/transform_template.py` L13–14 | `APP = 'XXXX'` / `TBL = 'tblXXXX'` | 你的多维表格 app_token 和数据表 ID（wiki 链接先 `fbase.js resolve`） |
+| 源表 | L16–19 | `SOURCES` / `CURRENT` | 你导出的 sheet JSON；增量迁移时填现有数据 dump |
+| 映射字典 | L22–27 | `PRODUCT` / `PERSON` / `TIER_BY_FANS` / `COL` | 每次迁移和用户确认后现填；量级分档按你的口径 |
+| 飞书凭据 | `scripts/fbase.js` L17 | `~/.feishu/credentials.json` | 你自己的自建应用 app_id / app_secret |
+| 项目目录 | SKILL.md L20 | `./gsheet-migrations/<品牌>_<日期>/` | 任意固定目录，别放会被清理的临时目录 |
+
+### 20. content/video-breakdown-doc（★★★★）🆕
+
+拆解方法（逐秒看片、字幕为准、「」只放原话、完整话术分层、用户视角讲作用）和文档骨架是通用的，抖音、TikTok、视频号素材都能用。要改的是工具链参数：
+
+| 参数 | 位置 | 原值 | 换成什么 |
+|---|---|---|---|
+| 转写语言 | `scripts/transcribe_zh.py` L28 | `language="zh"` | 你素材的口播语言（如 `"vi"` / `"th"` / `"en"`），或删掉让 Whisper 自动识别 |
+| Whisper 模型 | L19 | `large-v3`，CPU int8，12 线程 | 机器配置不够就换 `medium` |
+| 字幕区位置 | `scripts/prep.py` L101–102 | 画面高度 58%～84% | 你素材的字幕位置；也可以每次用 `--sub-top/--sub-bottom` 传 |
+| 飞书账号 | `references/doc-structure.md` L94 | `lark-cli --profile personal` | 你的 lark-cli profile 和文档存放文件夹 |
+| Benchmark 分级线 | `references/data-benchmark.md` L38 | ROI 2.6 / 2.3 / 2.0 → 指数 106 / 94 / 82 | 按你自己 Top N 素材的分位数重算 |
+| 素材来源 | SKILL.md L31、`data-benchmark.md` L3–6 | 品牌素材后台按素材 ID 下载、取详情数据 | 你的素材库或千川 / TikTok 后台导出 |
+
+### 21. kans-analysis/kans-cads-summary-table（★★★）🆕
+
+口径（结案消耗 / CPCo / 种草效率 / 品广质量分 / 总营销 ROI / 付费流占比）是 TikTok C-ads 通用的，表的版式和品牌绑定在几处常量里：
+
+| 参数 | 位置 | 原值 | 换成什么 |
+|---|---|---|---|
+| 产品写法 → 简称 | `scripts/build_summary.py` L30–36 | 白精华 / 红精华 / 素颜霜 / 377次抛 / 战痘次抛 的中英写法 | 你的产品线和报告里的写法 |
+| 商品 ID → 简称 | L37–40 | `1000000000000000001` 起的示例 ID | 你 GMV Max 导出文件名里的 Product ID |
+| 报告命名格式 | L41；SKILL.md L28 | `素材ID_起投MMDD_截止MMDD_产品` | 你团队的 TTMS 报告命名规则（改正则） |
+| 品牌名 | L2、L496、L572、L646 | 「KANS 越南」 | 你的品牌 / 市场 |
+| 汇率 | SKILL.md L14 | 每期问用户，示例 26310 | 照样每期问，别写死 |
+
 ---
 
 ## 三、按业务类型的接入路径
@@ -368,6 +409,8 @@ TTMS 三件（`ttms-brand-diagnosis`、`ttms-audience-package-strategy`、`tikto
 能跨平台的是数据处理与复盘方法：
 
 - `feishu-docs`：完全无关平台，直接用。
+- `gsheet-to-feishu-base-migration`：只要你的协作表要从 Google 搬到飞书，和电商平台无关，直接用。
+- `video-breakdown-doc`：抖音 / 千川素材本来就是它的主场；其他平台改转写语言和素材来源即可。
 - `tkshop-daren-cleaning`：换成你平台的达人导出后，清洗规则（区间取中位、占位符不当 0、中英标签双认、单条件命中数打印）都能复用，改列名和货币即可。
 - `kans-livestream-charts`：只要你能给出「日期 / 花费 / GMV」和「日期 / 各渠道 GMV」两张表，三张图不认平台。抖音电商用户把 USD 相关参数换成 `--no-rmb` 直接看人民币。
 - `kans-vn-category-competition`：需要一个类目级店铺榜单（抖音有蝉妈妈 / 达多多，Shopee 有第三方榜单），把 `COLMAP` 映射到你的榜单列名、渠道名 `NM` 改成你平台的渠道划分（如「自播 / 达播 / 商城 / 短视频」）；两周交集口径、多店合并、加权 vs 中位数校验这三条方法论完全平台无关。

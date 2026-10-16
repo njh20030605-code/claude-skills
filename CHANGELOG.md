@@ -1,5 +1,21 @@
 # Changelog
 
+## v1.2.0 · 2026-10-16
+
+**新增 3 个 skill，目录按用途重新分组，共 21 个。**
+
+- **新增 `content/video-breakdown-doc`**：短视频素材逐秒拆解成飞书文档。1 秒 1 帧总览图 + 0.5 秒字幕条逐格核对，
+  产出数据 Benchmark、结构母版、前三秒钩子地图、逐条拆解大表（附视频 + 分层完整话术）、重点案例拆解卡，
+  可整篇复制出数据换成指数的对外版。配套 `prep` / `transcribe_zh` / `parse_review` / `build_table` / `quotes` / `svg_bench` / `scan_sensitive` 七个脚本
+- **新增 `kans-analysis/kans-cads-summary-table`**：TTMS 种草报告 + GMV Max Creative + 达人订单 + Campaign Report
+  合成按素材的品广投放决策表，按内容自动识别文件，自带校验页；普通对话开代码执行即可，不需要浏览器
+- **新增 `feishu/gsheet-to-feishu-base-migration`**：Google 表格迁飞书多维表格的通用流程（口径确认 → 灌数 → 增量补迁 → 回填 → 回滚），
+  附踩坑清单和一次真实迁移的口径对照
+- **更新 `tiktok-brand-ads-analysis`**：新增第零节「行业 Benchmark」，每次分析强制出「实际 vs 美妆行业 Benchmark」对比表；补充平台 C-ads Playbook 要点
+- **README 重新分组**：周报与复盘 / 品牌广告·种草·人群包 / 投放监控与后台自动化 / 内容 / 数据清洗与飞书 / 个人；
+  新增「2026-10 更新」和「内容编导」角色入口；`CUSTOMIZE.md` 补 19–21 节
+- **脱敏**：`scrub.sh` 新增规则（内部素材后台与取数脚本、飞书 token、同事名、真实商品 / 素材 ID），同步后自动扫残留，命中即中止
+
 ## v1.1.0 · 2026-09-20
 
 **从「KANS 专用」变成「填参数就能用的框架」。**

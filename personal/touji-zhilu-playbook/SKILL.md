@@ -7,7 +7,7 @@ description: 「投机之路」(Telegram @journey_of_someone) 全量帖子存档
 
 Telegram 公开频道 **投机之路 / @journey_of_someone**（作者推特 @Vida_BWE，方程式新闻 BWEnews 创始人）的全量帖子存档与方法论索引。
 
-- 存档区间：**2025-04-25 → 2026-08-13**，**174 条**有正文帖子（缺失的 id 为相册组图成员或已删消息，无独立正文）
+- 存档区间：**2025-04-25 → 2026-09-28**，**176 条**有正文帖子（缺失的 id 为相册组图成员或已删消息，无独立正文）
 - 原始数据：`references/posts.json`（结构化）、`references/archive.md`（可读全文）
 - 方法论提炼：`references/methodology.md`（**主要参考文件，按主题分节，每条都带帖子编号**）
 

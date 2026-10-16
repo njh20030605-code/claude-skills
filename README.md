@@ -2,12 +2,12 @@
 
 # Claude Skills 合集 · 自写 Claude 技能
 
-**18 个手写 skill，给 Claude Code / Claude in Chrome / claude.ai 用：TikTok 后台浏览器自动化、电商运营分析、数据清洗、直播话术、飞书文档。**
+**21 个手写 skill，给 Claude Code / Claude in Chrome / claude.ai 用：周报复盘、品牌广告与人群包、TikTok 后台自动化、短视频素材拆解、飞书表格迁移。**
 
 中文 | [English](README.en.md)
 
 ![Claude](https://img.shields.io/badge/Claude-Code%20%7C%20in%20Chrome%20%7C%20claude.ai-D97757?logo=anthropic&logoColor=white)
-![Skills](https://img.shields.io/badge/skills-18-blue)
+![Skills](https://img.shields.io/badge/skills-21-blue)
 ![Domain](https://img.shields.io/badge/%E5%9C%BA%E6%99%AF-TikTok%20Shop%20%E8%B6%8A%E5%8D%97-000000?logo=tiktok&logoColor=white)
 ![License: MIT](https://img.shields.io/badge/license-MIT-green)
 
@@ -15,84 +15,94 @@
 
 我在 Claude（Claude Code / Claude in Chrome / claude.ai）里用的自定义 skill。每个 skill 一个目录，`SKILL.md` 是入口（frontmatter 的 `name` / `description` 决定何时触发，正文是操作手册），`scripts/` `references/` `examples/` 是配套脚本、口径资料和示例数据。
 
-绝大多数 skill 绑定 **KANS（韩束）越南 TikTok Shop** 运营语境：汇率 ₫3,860 ≈ ¥1，主 KPI 是本土店直播间 GMV + 商品卡 GMV。
+绝大多数 skill 绑定 **KANS（韩束）越南 TikTok Shop** 运营语境：汇率 ₫3,860 ≈ ¥1，主 KPI 是本土店直播间 GMV + 商品卡 GMV。公开版已脱敏：内部系统、表格 token、同事名、真实商品 / 素材 ID 都换成了占位值。
+
+## 🆕 2026-10 更新
+
+| skill | 一句话 |
+|---|---|
+| [`video-breakdown-doc`](content/video-breakdown-doc/) | **新增**：把一批带货短视频逐秒拆解成飞书文档，出结构母版、前三秒钩子、逐条话术大表、重点案例，还能一键出数据脱敏的对外版 |
+| [`kans-cads-summary-table`](kans-analysis/kans-cads-summary-table/) | **新增**：把 TTMS 种草报告 + GMV Max + 订单 + Campaign 四份导出合成一张按素材的品广投放决策表，不需要浏览器 |
+| [`gsheet-to-feishu-base-migration`](feishu/gsheet-to-feishu-base-migration/) | **新增**：Google 表格迁飞书多维表格的通用流程，首次灌数 / 增量补迁 / 回填 / 回滚，附两次真实迁移的口径清单 |
+| [`tiktok-brand-ads-analysis`](kans-analysis/tiktok-brand-ads-analysis/) | **更新**：每次分析强制出「实际 vs 美妆行业 Benchmark」对比表，补充平台 C-ads Playbook 要点 |
 
 ## 给谁用 · 按角色找 skill
 
 | 你是 | 先看这几个 | 典型一句话 |
 |---|---|---|
-| **广告投手 / 投放实习生** | [`tiktok-automation/`](tiktok-automation/) 全部 · [`kans-analysis/kans-vn-high-cost-low-roi-hourly`](kans-analysis/kans-vn-high-cost-low-roi-hourly/) | 「按我发的清单批量改预算」「把这些达人加进排除列表」「这些素材 ID 是哪些达人发的」 |
-| **写周报 / 月报的运营** | [`kans-analysis/kans-vn-weekly-flow`](kans-analysis/kans-vn-weekly-flow/) · [`kans-livestream-charts`](kans-analysis/kans-livestream-charts/) · [`kans-vn-category-competition`](kans-analysis/kans-vn-category-competition/) | 「开始跑 9 月 W2 周报」「这是本周和上周的店铺数据，做竞品对比」 |
-| **品牌广告 / 人群包负责人** | [`tiktok-brand-upper-funnel`](kans-analysis/tiktok-brand-upper-funnel/) · [`ttms-audience-package-strategy`](kans-analysis/ttms-audience-package-strategy/) · [`ttms-brand-diagnosis`](kans-analysis/ttms-brand-diagnosis/) · [`kans-ttms-cads-report-batch`](tiktok-automation/kans-ttms-cads-report-batch/) | 「这个目标选什么标签」「CPCo 多少算好」「批量建种草广告结案报告」 |
-| **达人 BD** | [`data-cleaning/tkshop-daren-cleaning`](data-cleaning/tkshop-daren-cleaning/) | 「把这份达人导出表清洗一下，按客单价和护肤占比初筛」 |
-| **直播话术 / 主播培训** | [`live-script/vn-kans-script`](live-script/vn-kans-script/) | 「写一版美白三件套的越南语循环话术，配手卡」 |
-| **任何要读写飞书文档的人** | [`feishu/feishu-docs`](feishu/feishu-docs/) | 「把结论写进这个飞书文档」「读一下这个多维表格」 |
+| **广告投手 / 投放实习生** | [🤖 后台自动化](#-投放监控与-tiktok-后台自动化claude-in-chrome) 全部 | 「按我发的清单批量改预算」「把这些达人加进排除列表」「这些素材 ID 是哪些达人发的」 |
+| **品牌广告 / 种草负责人** | [`kans-cads-summary-table`](kans-analysis/kans-cads-summary-table/) · [`tiktok-brand-ads-analysis`](kans-analysis/tiktok-brand-ads-analysis/) · [`ttms-audience-package-strategy`](kans-analysis/ttms-audience-package-strategy/) | 「出这周的品广表」「CPCo 多少算好」「这个目标选什么人群标签」 |
+| **写周报 / 月报的运营** | [`kans-vn-weekly-flow`](kans-analysis/kans-vn-weekly-flow/) · [`kans-livestream-charts`](kans-analysis/kans-livestream-charts/) · [`kans-vn-category-competition`](kans-analysis/kans-vn-category-competition/) | 「开始跑 9 月 W2 周报」「这是本周和上周的店铺数据，做竞品对比」 |
+| **内容编导 / 素材优化** | [`video-breakdown-doc`](content/video-breakdown-doc/) | 「拆一下这几条爆款视频」「重点拆两个案例」「做个对外脱敏版」 |
+| **直播话术 / 主播培训** | [`vn-kans-script`](live-script/vn-kans-script/) | 「写一版美白三件套的越南语循环话术，配手卡」 |
+| **达人 BD** | [`tkshop-daren-cleaning`](data-cleaning/tkshop-daren-cleaning/) · [`gsheet-to-feishu-base-migration`](feishu/gsheet-to-feishu-base-migration/) | 「把达人导出表清洗一下按客单价初筛」「把合作表从 Google 迁到飞书」 |
+| **任何要读写飞书文档的人** | [`feishu-docs`](feishu/feishu-docs/) | 「把结论写进这个飞书文档」「读一下这个多维表格」 |
 
-关键词：Claude Skills · Claude in Chrome · TikTok Ads 自动化 · TTMS · GMV Max · 越南电商 · 周报自动化 · 飞书
+做 PPT 或 HTML 页面的，看另一个仓库 [slidor-style-skill](https://github.com/njh20030605-code/slidor-style-skill)（Slidor + Lucile 风格的设计 skill）。
 
-## 接入你自己的店铺
-
-这些 skill 的流程是通用的，KANS 特有的只是参数（店铺名、汇率、阈值、计划 ID、表链接）。**[CUSTOMIZE.md](CUSTOMIZE.md)** 逐个 skill 列出了通用程度评级（★1–5）、必改参数、在哪一行改，以及「越南 TikTok 卖家 / 其他国家 TikTok 卖家 / 非 TikTok 电商」三条接入路径。5 个 skill 开箱即用，4 个改一处即可。
-
-## 怎么用
-
-- **Claude Code**：把某个 skill 目录复制到 `~/.claude/skills/<name>/`，或整个仓库 clone 后做软链接；对话里 `/<name>` 或自然语言触发。
-- **claude.ai / Cowork**：把目录打成 zip（`SKILL.md` 在根）上传到「技能」。
-- 每个 `SKILL.md` 开头的 `description` 写清了触发场景，改触发条件只改它。
+关键词：Claude Skills · Claude in Chrome · TikTok Ads 自动化 · TTMS · C-ads · GMV Max · 素材拆解 · 越南电商 · 周报自动化 · 飞书多维表格
 
 ## 目录
 
-### 📊 KANS 分析类（周报 / 品广 / 人群包 / 预警口径）
+| 分类 | 数量 | skill |
+|---|---|---|
+| [📈 周报与复盘](#-周报与复盘) | 4 | kans-vn-weekly-flow · kans-livestream-charts · kans-vn-category-competition · tiktok-vn-kans-live-ops |
+| [🎯 品牌广告 · 种草 · 人群包](#-品牌广告--种草--人群包) | 5 | kans-cads-summary-table · tiktok-brand-ads-analysis · tiktok-brand-upper-funnel · ttms-brand-diagnosis · ttms-audience-package-strategy |
+| [🤖 投放监控与后台自动化](#-投放监控与-tiktok-后台自动化claude-in-chrome) | 6 | kans-vn-high-cost-low-roi-hourly · kans-ttms-cads-report-batch · tiktok-batch-budget-update · tiktok-batch-exclude-creators · tiktok-copy-adgroup-swap-creative · tiktok-creative-id-to-creator |
+| [🎬 内容：素材拆解与直播话术](#-内容素材拆解与直播话术) | 2 | video-breakdown-doc · vn-kans-script |
+| [🗂 数据清洗与飞书](#-数据清洗与飞书) | 3 | tkshop-daren-cleaning · feishu-docs · gsheet-to-feishu-base-migration |
+| [🧭 个人](#-个人) | 1 | touji-zhilu-playbook |
 
-把后台导出的数据变成周报结论、图表和决策。大多是「给数据 → 出图 + 结论」的分析型 skill。
+### 📈 周报与复盘
+
+把后台导出的数据变成周报结论、图表，写进飞书。
 
 | skill | 用途 | 配套 |
 |---|---|---|
-| [`kans-livestream-charts`](kans-analysis/kans-livestream-charts/) | 生成 KANS 越南直播运营周报/月报的三类标准图表。当用户提供直播间日度数据（KANS Campaign 导出）和/或大盘品类数据（TTMS Serums & Essences 导出），并要求做 (1) 每日 GMV+ROI 周对比柱线图、(2) KANS 直播 vs 大盘直播 GMV 相关性验证双面板图、(3) 品类大盘堆叠 GM… | examples, scripts |
-| [`kans-vn-category-competition`](kans-analysis/kans-vn-category-competition/) | 越南美妆个护类目【竞争格局周报】——从 FastMoss/Kalodata 店铺级导出（Store Name / GMV / Affiliate Video / Self-Account Video / Self-Account Live / Affiliate Live / Shop Tab GMV）做两周对比，输出 6 张标准图 … | examples, references, scripts |
-| [`kans-vn-high-cost-low-roi-hourly`](kans-analysis/kans-vn-high-cost-low-roi-hourly/) | 每小时扫描KANS越南GMV Max(商品+直播)当天高成本低ROI素材；每天10点/14点额外扫近7天，输出一个xlsx按当天/近7天分sheet。当用户要求跑"KANS 高成本低ROI素材预警 / GMV Max 低效高耗素材扫描"或将其设为定时任务时使用。 | — |
-| [`kans-vn-weekly-flow`](kans-analysis/kans-vn-weekly-flow/) | KANS 越南 SKINCARE 直播间【周报 / 月报复盘全流程】半自动编排器。当用户用一句话启动复盘（如"开始跑 7月W1 周报 / 这周的复盘 / 把周报写进飞书"）时使用。按固定 13 步走：大盘→直播间GMV→相关性→GMV-ROI→退款率→短视频占比→竞品→流量结构→品广→商品卡→单链接→主播三件套→写入飞书。每步缺数据时… | scripts |
-| [`tiktok-brand-ads-analysis`](kans-analysis/tiktok-brand-ads-analysis/) | 分析越南市场 TikTok Brand Consideration Ads (C-ads) 投放数据。当用户提供 C-ads 数据并需诊断预算/定向/排期/创意/大促节奏，或评估种草效果(CPCo、Co人群、人群流转)时使用。核心看 CPCo 与 Co 人群规模，不只看 GMV/ROAS。 | — |
-| [`tiktok-brand-upper-funnel`](kans-analysis/tiktok-brand-upper-funnel/) | TikTok 品牌上漏斗诊断（越南等 TTMS 覆盖市场）。当用户上传/粘贴的是【TTMS Brand Diagnosis 四阶段截图或导出】（Premium Reach / Massive Reach / Consideration / Conversion、同比、基准、排名）或【广告管理平台 推广系列汇总消耗 USD 导出 / 品… | — |
-| [`tiktok-vn-kans-live-ops`](kans-analysis/tiktok-vn-kans-live-ops/) | TikTok 越南韩束(KANS)SKINCARE 直播间运营复盘分析师。当用户提供某周/某月直播间数据（GMV/NMV、ROI、退款率、流量结构、转化漏斗、变现效率、互动、付费自然结构、主力链接SKU、主播排名、背景视觉、同行视觉、GMV-MAX商品卡等）并需要写周报/月报、做环比复盘、归因诊断、给出下一步运营动作时使用。核心：不只… | — |
-| [`ttms-audience-package-strategy`](kans-analysis/ttms-audience-package-strategy/) | TTMS（TikTok Market Scope）人群包策略顾问 + 种草广告（C-ads）承接。当用户要「打人群包/建受众包/这个目标选什么标签/ACC 和 TikTok Shop 标签怎么选/视频受众估算不出规模/人群包推不到 TTAM/开 R&F 要多久/人群包过期/新品包爆品包怎么分/种草广告怎么搭计划/CPCo 多少算好」时… | — |
-| [`ttms-brand-diagnosis`](kans-analysis/ttms-brand-diagnosis/) | 用 TikTok Market Scope (TTMS) Brand Diagnosis 模块做品牌增长漏斗复盘（TTMS分析师）。当用户提供 TTMS 品牌诊断数据（Premium Reach / Massive Reach / Consideration / Conversion 四阶段指标、同比、基准、排名）并需要定位瓶颈层、系… | — |
+| [`kans-vn-weekly-flow`](kans-analysis/kans-vn-weekly-flow/) | 周报 / 月报全流程编排：一句话启动，固定 13 步（大盘→直播间 GMV→相关性→退款→竞品→流量→品广→商品卡→单链接→主播），缺数据时停下来告诉你去哪导，最后写进飞书 | scripts |
+| [`kans-livestream-charts`](kans-analysis/kans-livestream-charts/) | 直播周报三张标准图：每日 GMV + ROI 周对比、自家直播 vs 大盘相关性、品类大盘堆叠趋势 | examples, scripts |
+| [`kans-vn-category-competition`](kans-analysis/kans-vn-category-competition/) | 类目竞争格局周报：FastMoss / Kalodata 店铺级导出做两周对比，出 6 张图 + 人民币口径 xlsx + 异动品牌结论 | examples, references, scripts |
+| [`tiktok-vn-kans-live-ops`](kans-analysis/tiktok-vn-kans-live-ops/) | 直播间复盘分析师：GMV / ROI / 退款 / 流量结构 / 转化漏斗 / 主播排名的环比归因，给出下一步运营动作 | — |
 
-### 🤖 TikTok 后台浏览器自动化（Claude in Chrome）
+### 🎯 品牌广告 · 种草 · 人群包
+
+C-ads（种草广告）和 TTMS 的分析与决策：看 CPCo 和 Co 人群，不只看 GMV。
+
+| skill | 用途 | 配套 |
+|---|---|---|
+| [`kans-cads-summary-table`](kans-analysis/kans-cads-summary-table/) 🆕 | 品广素材投放决策汇总表：TTMS 种草报告 + GMV Max Creative + 达人订单 + Campaign Report 合成一张按素材的表（CPCo / 种草效率 / 品广质量分 / 总营销 ROI / 付费流占比），自带校验页 | scripts, templates |
+| [`tiktok-brand-ads-analysis`](kans-analysis/tiktok-brand-ads-analysis/) | C-ads 投放诊断：预算 / 定向 / 排期 / 创意 / 大促节奏四维 + 美妆行业 Benchmark 对比表（必出） | — |
+| [`tiktok-brand-upper-funnel`](kans-analysis/tiktok-brand-upper-funnel/) | 品牌上漏斗诊断：TTMS 四阶段截图或推广系列消耗导出，定位卡在哪一层 | — |
+| [`ttms-brand-diagnosis`](kans-analysis/ttms-brand-diagnosis/) | TTMS Brand Diagnosis 四阶段指标复盘，找瓶颈层 | — |
+| [`ttms-audience-package-strategy`](kans-analysis/ttms-audience-package-strategy/) | 人群包策略顾问：选什么标签、估不出规模怎么办、推不到 TTAM、新品包 / 爆品包怎么分，以及 C-ads 承接怎么搭 | — |
+
+### 🤖 投放监控与 TikTok 后台自动化（Claude in Chrome）
 
 在 TikTok 广告平台 / 商家中心 / TTMS 页面上代替人手批量操作。共同点：逐条校验计数、提交前列对照表让人确认。
 
 | skill | 用途 | 配套 |
 |---|---|---|
-| [`kans-ttms-cads-report-batch`](tiktok-automation/kans-ttms-cads-report-batch/) | 在 TikTok Market Scope (TTMS) 投后结案页面用 Claude in Chrome 批量创建 KANS 越南「种草广告报告」结案。当用户给出一批待建报告（或给出 Campaign Report + GMV Max Creative 导出表让你自己筛）并要求"批量建种草广告报告 / 跑 C-ads 结案 / 建投… | — |
-| [`tiktok-batch-budget-update`](tiktok-automation/tiktok-batch-budget-update/) | 在 TikTok 广告管理平台（ads.tiktok.com/i18n/manage/adgroup）用 Claude in Chrome 按「广告组ID → 新日预算」清单批量改预算。当用户粘贴一份 ID+数字的清单并说「调一下预算 / 按我发的改预算 / 批量改日预算 / 把新预算加进去 / 改总预算」时使用。核心：广告组ID是广… | references |
-| [`tiktok-batch-exclude-creators`](tiktok-automation/tiktok-batch-exclude-creators/) | 在 TikTok 商家中心「修改广告计划 › 管理创意作品」页面，用 Claude in Chrome 把一批达人用户名逐个加入「排除」联盟列表并保存。当用户给出一份待排除达人清单并要求"批量排除达人 / 把这些达人加到排除列表 / 逐个勾选排除用户名 / 在排除下拉里按用户名批量勾选"时使用。也适用于任何"带搜索框的勾选下拉列表里… | — |
-| [`tiktok-copy-adgroup-swap-creative`](tiktok-automation/tiktok-copy-adgroup-swap-creative/) | 在 TikTok 广告管理平台用 Claude in Chrome 复制已有广告组、批量换成新达人素材（帖子授权码）、改名改预算改排期后发布。用户说「复制这个广告组投新素材 / 建品牌广告 / 这几个达人的视频拿去投」时使用。 | — |
-| [`tiktok-creative-id-to-creator`](tiktok-automation/tiktok-creative-id-to-creator/) | 在 TikTok Shop 卖家后台「创意作品」(ads-creation/manage-analyze) 页面，用 Claude in Chrome 批量把一批已知的素材/作品ID（作品ID / creative_id）反查成对应的达人用户名，并去重、导出本地 CSV。当用户给出一批作品ID/素材ID 并要求"查出这些素材是哪些达人… | — |
+| [`kans-vn-high-cost-low-roi-hourly`](kans-analysis/kans-vn-high-cost-low-roi-hourly/) | 每小时扫 GMV Max 当天高成本低 ROI 素材，10 点 / 14 点加扫近 7 天，命中才出 xlsx | — |
+| [`kans-ttms-cads-report-batch`](tiktok-automation/kans-ttms-cads-report-batch/) | 在 TTMS 投后结案页批量建种草广告报告 | — |
+| [`tiktok-batch-budget-update`](tiktok-automation/tiktok-batch-budget-update/) | 按「广告组 ID → 新日预算」清单批量改预算 | references |
+| [`tiktok-batch-exclude-creators`](tiktok-automation/tiktok-batch-exclude-creators/) | 在「管理创意作品」里把一批达人逐个加进排除列表 | — |
+| [`tiktok-copy-adgroup-swap-creative`](tiktok-automation/tiktok-copy-adgroup-swap-creative/) | 复制已有广告组，换成新达人素材（帖子授权码），改名改预算改排期后发布 | — |
+| [`tiktok-creative-id-to-creator`](tiktok-automation/tiktok-creative-id-to-creator/) | 一批素材 ID 反查达人用户名，去重导出 CSV | — |
 
-### 🧹 数据清洗
-
-导出表的单位换算、去重、初筛。
-
-| skill | 用途 | 配套 |
-|---|---|---|
-| [`tkshop-daren-cleaning`](data-cleaning/tkshop-daren-cleaning/) | 清洗/合并 TikTok Shop「tkshop达人信息」.xls 导出：K₫/M₫/万 单位换算、客单价区间取中位数、拆出直播视频占比与类目/性别/年龄占比、按达人名称去重合并；并支持按成交量/客单价/男女比/视频占比/护肤占比做达人初筛。 | filter_candidates.py |
-
-### 🎙 直播话术
-
-越南直播间循环话术的写作、改写与手卡配牌。
+### 🎬 内容：素材拆解与直播话术
 
 | skill | 用途 | 配套 |
 |---|---|---|
-| [`vn-kans-script`](live-script/vn-kans-script/) | VN KANS话术 —— 越南 TikTok 韩束(KANS)直播间循环话术的写作、改写、手卡配牌与物料诊断。当用户要写/改越南直播间话术、调整段落顺序或优先级、把手卡（POSM / INFO BOARD / 主图价格卡）配到话术旁边、判断物料是红系抗老还是白系美白、诊断缺哪些手卡、或生成带手卡图的话术 xlsx 和可打印手卡 PDF… | — |
+| [`video-breakdown-doc`](content/video-breakdown-doc/) 🆕 | 短视频素材逐秒拆解成飞书文档：1 秒 1 帧 + 0.5 秒字幕条逐格核对，产出数据 Benchmark、结构母版、前三秒钩子地图、逐条拆解大表（附视频 + 分层完整话术）、重点案例拆解卡，可出数据脱敏的对外版 | references, scripts, assets |
+| [`vn-kans-script`](live-script/vn-kans-script/) | 越南直播间循环话术的写作、改写与手卡配牌，可生成带手卡图的话术 xlsx 和可打印手卡 PDF | — |
 
-### 📄 飞书云文档
-
-读写飞书 sheet / docx / 多维表格。
+### 🗂 数据清洗与飞书
 
 | skill | 用途 | 配套 |
 |---|---|---|
-| [`feishu-docs`](feishu/feishu-docs/) | 读写飞书云文档（sheet / docx / 多维表格）。当请求里出现飞书链接（*.feishu.cn/wiki|sheets|docx|base）或要求把内容写进飞书文档、回填飞书表格、从飞书文档取数时自动使用。 | — |
+| [`tkshop-daren-cleaning`](data-cleaning/tkshop-daren-cleaning/) | 清洗 / 合并 TikTok Shop 达人导出：K₫/M₫/万 单位换算、区间取中位、按达人去重，并按成交量 / 客单价 / 护肤占比初筛 | filter_candidates.py |
+| [`feishu-docs`](feishu/feishu-docs/) | 读写飞书云文档（sheet / docx / 多维表格） | — |
+| [`gsheet-to-feishu-base-migration`](feishu/gsheet-to-feishu-base-migration/) 🆕 | Google 表格迁飞书多维表格：口径确认清单、首次灌数、增量补迁、字段回填、按 record_id 回滚，附踩坑清单和一份真实迁移口径作参照 | references, scripts |
 
 ### 🧭 个人
 
@@ -100,9 +110,19 @@
 
 | skill | 用途 | 配套 |
 |---|---|---|
-| [`touji-zhilu-playbook`](personal/touji-zhilu-playbook/) | 「投机之路」(Telegram @journey_of_someone) 全量帖子存档 + 方法论检索。当用户问「投机之路怎么看X / 他当时是怎么做的 / 他对某个币·某个交易所·某次黑天鹅说过什么」、想用他那套"现金为王+只买急跌+套利吃摩擦+不做无edge的空"的框架给自己的仓位或某笔交易做体检、想查他的原话原帖、或要把频道存档… | references, scripts |
+| [`touji-zhilu-playbook`](personal/touji-zhilu-playbook/) | 「投机之路」Telegram 频道的方法论检索（公开版只含方法论摘要，不含帖子全文） | references, scripts |
 
-共 18 个 skill。
+共 21 个 skill。
+
+## 接入你自己的店铺
+
+这些 skill 的流程是通用的，KANS 特有的只是参数（店铺名、汇率、阈值、计划 ID、表链接）。**[CUSTOMIZE.md](CUSTOMIZE.md)** 逐个 skill 列出了通用程度评级（★1–5）、必改参数、在哪一行改，以及「越南 TikTok 卖家 / 其他国家 TikTok 卖家 / 非 TikTok 电商」三条接入路径。
+
+## 怎么用
+
+- **Claude Code**：把某个 skill 目录复制到 `~/.claude/skills/<name>/`，或整个仓库 clone 后做软链接；对话里 `/<name>` 或自然语言触发。
+- **claude.ai / Cowork**：把目录打成 zip（`SKILL.md` 在根）上传到「技能」。
+- 每个 `SKILL.md` 开头的 `description` 写清了触发场景，改触发条件只改它。
 
 ## 写 skill 的约定
 

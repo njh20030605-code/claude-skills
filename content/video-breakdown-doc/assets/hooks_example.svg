@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 560">
+  <text x="40" y="40" font-size="22" font-weight="bold" fill="#1F2329">前三秒钩子地图</text>
+  <text x="40" y="66" font-size="13" fill="#646A73">按用户心理分四类，每类下面是韩束素材的原话；标了秒数的两句出现在中段</text>
+  <g font-size="16" font-weight="bold" fill="#FFFFFF" text-anchor="middle">
+    <rect x="40" y="86" width="228" height="56" rx="12" fill="#6D5BD0"/><text x="154" y="110">好奇</text>
+    <rect x="282" y="86" width="228" height="56" rx="12" fill="#E5623A"/><text x="396" y="110">情绪</text>
+    <rect x="524" y="86" width="228" height="56" rx="12" fill="#2EA44F"/><text x="638" y="110">利益</text>
+    <rect x="766" y="86" width="228" height="56" rx="12" fill="#3E7BFA"/><text x="880" y="110">认知</text>
+  </g>
+  <g font-size="12" fill="#FFFFFF" text-anchor="middle">
+    <text x="154" y="131">「这和我想的不一样」</text><text x="396" y="131">「这说的就是我」</text><text x="638" y="131">「现在买能占便宜」</text><text x="880" y="131">「我知道该选哪个」</text>
+  </g>
+  <g font-size="13">
+    <rect x="40" y="156" width="228" height="104" rx="10" fill="#F0EEFF" stroke="#6D5BD0"/>
+    <text x="56" y="180" font-weight="bold" fill="#3F2FA8">反常识断言</text>
+    <text x="56" y="204" fill="#1F2329">「如果你的水乳用完了，</text><text x="56" y="224" fill="#1F2329">那 26 年就不要再买了」</text>
+    <text x="56" y="246" font-size="13" fill="#646A73">第 8 秒：「今年不流行用水乳了」</text>
+    <rect x="40" y="272" width="228" height="104" rx="10" fill="#F0EEFF" stroke="#6D5BD0"/>
+    <text x="56" y="296" font-weight="bold" fill="#3F2FA8">错误示范</text>
+    <text x="56" y="320" fill="#1F2329">「你们是不是还在这样</text><text x="56" y="340" fill="#1F2329">打开韩束的红蛮腰？」</text>
+    <rect x="40" y="388" width="228" height="104" rx="10" fill="#F0EEFF" stroke="#6D5BD0"/>
+    <text x="56" y="412" font-weight="bold" fill="#3F2FA8">明星争议</text>
+    <text x="56" y="436" fill="#1F2329">「著名演员林心如最近在抖音</text><text x="56" y="456" fill="#1F2329">上带货韩束白蛮腰，没想到被</text>
+<text x="56" y="478" fill="#1F2329">网友吐槽」</text>
+    <rect x="282" y="156" width="228" height="104" rx="10" fill="#FDEFEA" stroke="#E5623A"/>
+    <text x="298" y="180" font-weight="bold" fill="#B5401C">情感金句</text>
+    <text x="298" y="204" fill="#1F2329">「其实缺的真不是那点钱，</text><text x="298" y="224" fill="#1F2329">那点东西，</text>
+    <text x="298" y="246" fill="#646A73">要的是那份心意，那个态度」</text>
+    <rect x="282" y="272" width="228" height="104" rx="10" fill="#FDEFEA" stroke="#E5623A"/>
+    <text x="298" y="296" font-weight="bold" fill="#B5401C">节日情景剧</text>
+    <text x="298" y="320" fill="#1F2329">「哥，七夕了，</text><text x="298" y="340" fill="#1F2329">有没有惊喜？」</text>
+    <text x="298" y="362" fill="#646A73">「七夕也给老婆买红蛮腰啊」</text>
+    <rect x="524" y="156" width="228" height="104" rx="10" fill="#EAF6EC" stroke="#2EA44F"/>
+    <text x="540" y="180" font-weight="bold" fill="#1E7A35">价格漏洞</text>
+    <text x="540" y="204" fill="#1F2329">「老公你现在赶紧打开抖音，</text><text x="540" y="224" fill="#1F2329">我们运营直播间挂错链接了」</text>
+    
+    <rect x="524" y="272" width="228" height="104" rx="10" fill="#EAF6EC" stroke="#2EA44F"/>
+    <text x="540" y="296" font-weight="bold" fill="#1E7A35">薅羊毛</text>
+    <text x="540" y="320" fill="#1F2329">「我好像发现了一个支付漏洞，</text><text x="540" y="340" fill="#1F2329">我居然薅到了韩束红蛮腰</text>
+    <text x="540" y="362" fill="#1F2329">洗面奶的超级大羊毛」</text>
+    <rect x="524" y="388" width="228" height="104" rx="10" fill="#EAF6EC" stroke="#2EA44F"/>
+    <text x="540" y="412" font-weight="bold" fill="#1E7A35">价格让步（第 20 秒）</text>
+    <text x="540" y="436" fill="#1F2329">「99 50 支我忍了，</text><text x="540" y="456" fill="#1F2329">99 100 支我也忍了」</text>
+    <rect x="766" y="156" width="228" height="104" rx="10" fill="#EAF2FF" stroke="#3E7BFA"/>
+    <text x="782" y="180" font-weight="bold" fill="#1D4FB8">二选一</text>
+    <text x="782" y="204" fill="#1F2329">「377 是管你白不白，</text><text x="782" y="224" fill="#1F2329">闪充棒才是管你嫩不嫩」</text>
+    <rect x="766" y="272" width="228" height="104" rx="10" fill="#EAF2FF" stroke="#3E7BFA"/>
+    <text x="782" y="296" font-weight="bold" fill="#1D4FB8">效果递进</text>
+    <text x="782" y="320" fill="#1F2329">「这是一支的状态，这是5支</text><text x="782" y="340" fill="#1F2329">的状态，这是一盒的状态」</text>
+    <rect x="766" y="388" width="228" height="104" rx="10" fill="#EAF2FF" stroke="#3E7BFA"/>
+    <text x="782" y="412" font-weight="bold" fill="#1D4FB8">口碑</text>
+    <text x="782" y="436" fill="#1F2329">「网上说它是一支回春，</text><text x="782" y="456" fill="#1F2329">还真不是瞎说的」</text>
+  </g>
+  <rect x="40" y="510" width="954" height="36" rx="10" fill="#F2F3F5"/>
+  <text x="58" y="533" font-size="13" fill="#1F2329">开头画面要和钩子同时出现：明星正脸、产品特写或情景剧第一句台词，不要先铺垫再进主题。</text>
+</svg>

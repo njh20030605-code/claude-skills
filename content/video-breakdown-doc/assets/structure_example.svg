@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 470">
+  <text x="40" y="40" font-size="22" font-weight="bold" fill="#1F2329">韩束价格机制类爆款：7 段结构母版</text>
+  <text x="40" y="66" font-size="13" fill="#646A73">以 90 秒为例的时间分配；同一个母版换节点钩子反复用（七夕、女神节、母亲节、周年庆）</text>
+  <g font-size="15" font-weight="bold" fill="#FFFFFF" text-anchor="middle">
+    <polygon points="40,90 160,90 172,120 160,150 40,150" fill="#6D5BD0"/>
+    <polygon points="178,90 298,90 310,120 298,150 178,150 190,120" fill="#3E7BFA"/>
+    <polygon points="316,90 436,90 448,120 436,150 316,150 328,120" fill="#3E7BFA"/>
+    <polygon points="454,90 574,90 586,120 574,150 454,150 466,120" fill="#14A3A3"/>
+    <polygon points="592,90 712,90 724,120 712,150 592,150 604,120" fill="#14A3A3"/>
+    <polygon points="730,90 850,90 862,120 850,150 730,150 742,120" fill="#14A3A3"/>
+    <polygon points="868,90 988,90 1000,120 988,150 868,150 880,120" fill="#E5623A"/>
+    <text x="102" y="117">① 钩子</text><text x="244" y="117">② 背书</text><text x="382" y="117">③ 价格让步</text><text x="520" y="117">④ 数品一轮</text><text x="658" y="117">⑤ 换算场景</text><text x="796" y="117">⑥ 数品二轮</text><text x="934" y="117">⑦ 逼单</text>
+  </g>
+  <g font-size="12" fill="#FFFFFF" text-anchor="middle">
+    <text x="102" y="138">0–5 秒</text><text x="244" y="138">5–15 秒</text><text x="382" y="138">15–25 秒</text><text x="520" y="138">25–40 秒</text><text x="658" y="138">40–50 秒</text><text x="796" y="138">50–75 秒</text><text x="934" y="138">75–90 秒</text>
+  </g>
+  <g font-size="13" fill="#1F2329" text-anchor="middle">
+    <rect x="40" y="166" width="126" height="92" rx="10" fill="#F0EEFF" stroke="#6D5BD0"/>
+    <text x="103" y="194">反常识、情景剧</text><text x="103" y="216">价格漏洞、金句</text><text x="103" y="238">明星争议</text>
+    <rect x="178" y="166" width="126" height="92" rx="10" fill="#EAF2FF" stroke="#3E7BFA"/>
+    <text x="241" y="194">明星片段</text><text x="241" y="216">「把价格打下来了」</text><text x="241" y="238">成分一句话</text>
+    <rect x="316" y="166" width="126" height="92" rx="10" fill="#EAF2FF" stroke="#3E7BFA"/>
+    <text x="379" y="194">499、329、299</text><text x="379" y="216">「……的时候</text><text x="379" y="238">你没买」</text>
+    <rect x="454" y="166" width="126" height="92" rx="10" fill="#E6F7F7" stroke="#14A3A3"/>
+    <text x="517" y="194">开箱逐件点数</text><text x="517" y="216">水、乳、霜</text><text x="517" y="238">一件件报数量</text>
+    <rect x="592" y="166" width="126" height="92" rx="10" fill="#E6F7F7" stroke="#14A3A3"/>
+    <text x="655" y="194">「每天一块钱」</text><text x="655" y="216">「送妈妈 送婆婆</text><text x="655" y="238">送闺蜜 送给自己」</text>
+    <rect x="730" y="166" width="126" height="92" rx="10" fill="#E6F7F7" stroke="#14A3A3"/>
+    <text x="793" y="194">换主播再数一遍</text><text x="793" y="216">礼盒堆满桌面</text><text x="793" y="238">「还没完」</text>
+    <rect x="868" y="166" width="126" height="92" rx="10" fill="#FDEFEA" stroke="#E5623A"/>
+    <text x="931" y="194">「只有我在这才能送」</text><text x="931" y="216">「比双11还要便宜」</text><text x="931" y="238">「错过后悔一整年」</text>
+  </g>
+  <g font-size="14" font-weight="bold" text-anchor="middle">
+    <polyline points="40,280 40,290 166,290 166,280" fill="none" stroke="#6D5BD0" stroke-width="2"/>
+    <text x="103" y="314" fill="#3F2FA8">抓人</text>
+    <polyline points="178,280 178,290 442,290 442,280" fill="none" stroke="#3E7BFA" stroke-width="2"/>
+    <text x="310" y="314" fill="#1D4FB8">信任 + 占便宜</text>
+    <polyline points="454,280 454,290 856,290 856,280" fill="none" stroke="#14A3A3" stroke-width="2"/>
+    <text x="655" y="314" fill="#0B6E6E">把一套变成很多件</text>
+    <polyline points="868,280 868,290 994,290 994,280" fill="none" stroke="#E5623A" stroke-width="2"/>
+    <text x="931" y="314" fill="#B5401C">现在就买</text>
+  </g>
+  <rect x="40" y="342" width="954" height="104" rx="12" fill="#FFF7E8" stroke="#F5A623"/>
+  <text x="62" y="372" font-size="14" font-weight="bold" fill="#8A5A00">一句话总结</text>
+  <text x="62" y="398" font-size="13" fill="#1F2329">这 11 条里有 9 条以价格和赠品为主线，大体按这 7 段走：钩子留人，明星或背书给信任，数品把一套变成很多件，结尾用稀缺逼单。</text>
+  <text x="62" y="422" font-size="13" fill="#1F2329">另外 2 条以讲产品为主、没有让价环节：377 对比闪充棒教用户怎么选，红蛮腰功效混剪讲成分；不是每条都要走完 7 段。</text>
+</svg>
