@@ -20,7 +20,7 @@ hook_lines 不是原话会报错退出。输出末尾打印每条被改动的引
 """
 import html, json, re, sys
 sys.path.insert(0, __file__.rsplit('/', 1)[0])
-from quotes import alltext, dequote, near_quotes, norm
+from quotes import alltext, dequote, join_lines, near_quotes, norm
 
 esc = lambda s: html.escape(s, quote=False)
 H = lambda t: f'<th background-color="light-gray"><p>{t}</p></th>'
@@ -65,7 +65,7 @@ def main():
         sc, ch1 = script_cell(S, v)
         hl, ch2 = dequote(r['highlight'], S, v)
         report[v] = dict(作用改引号=ch1, 亮点改引号=ch2, 近似原话=near_quotes(hl, S, v))
-        hook = f'<p><b>画面：</b>{esc(r["hook_pic"])}</p><p><b>原话：</b>' + ''.join(f'「{esc(l)}」' for l in r['hook_lines']) + '</p>'
+        hook = f'<p><b>画面：</b>{esc(r["hook_pic"])}</p><p><b>原话：</b>' + esc(join_lines(r['hook_lines'])) + '</p>'
         c1 = f'<p>{esc(r["name"])}</p>{video_xml(r["video"])}'
         trs.append(f'<tr><td>{c1}</td><td><p>{esc(r["duration"])}</p></td><td>{hook}</td><td>{sc}</td><td><p>{esc(hl)}</p></td></tr>')
     xml = ('<table><colgroup><col width="160"/><col width="56"/><col width="190"/><col width="390"/><col width="210"/></colgroup>'

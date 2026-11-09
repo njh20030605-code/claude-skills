@@ -66,11 +66,32 @@ def near_quotes(text, S, vid, threshold=0.6):
     return out
 
 
+ENDP = tuple('！!？?。…~～，,')
+
+
+def join_lines(lines):
+    """连续的几张字幕卡 → 一个「」：卡与卡之间加“，”（上一张已以标点结尾则不加）；行尾（据口播）类注释挪到引号外。"""
+    notes, s = [], ''
+    for l in lines:
+        m = re.match(r'^(.*?)(（[^）]*）)?$', l)
+        core, note = m.group(1), m.group(2)
+        if note and note not in notes:
+            notes.append(note)
+        s = core if not s else s + ('' if s.endswith(ENDP) else '，') + core
+    return f'「{s}」' + ''.join(notes)
+
+
+def adjacent_quotes(text):
+    """「A」「B」紧挨着的组：大多是一句话被字幕卡拆开了，要逐组判断。"""
+    t = re.sub(r'<[^>]+>', '\n', text)
+    return sorted(set(m.group(0) for m in re.finditer(r'「[^」\n]{1,80}」(?:「[^」\n]{1,80}」)+', t)))
+
+
 if __name__ == '__main__':
     S = load_scripts(sys.argv[1])
     vid = sys.argv[2]
-    t = open(sys.argv[3], encoding='utf-8').read()
-    t = re.sub(r'<[^>]+>', ' ', t)
+    raw = open(sys.argv[3], encoding='utf-8').read()
+    t = re.sub(r'<[^>]+>', ' ', raw)
     _, bad = dequote(t, S, vid)
     print('既不是口播原话、也不在核对文件屏幕文字里的「」（改“”或换原话）：')
     for b in bad:
@@ -78,3 +99,9 @@ if __name__ == '__main__':
     print('“”里的近似原话（建议换成「原话」）：')
     for x, best, r in near_quotes(t, S, vid):
         print(f'  - “{x}” ≈ 「{best}」 ({r})')
+    print('紧挨着的「」「」（一句话拆开的合成一个；中间跳过句子用……；对比标签/对话/逐字弹出的保留）：')
+    for x in adjacent_quotes(raw):
+        print('  -', x)
+    ph = re.findall(r'__[A-Z]+_?\d*__|\{\{[^}]*\}\}', raw)
+    if ph:
+        print('残留占位符（必须删掉或换成真实内容）：', sorted(set(ph)))
